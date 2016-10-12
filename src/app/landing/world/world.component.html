@@ -1,0 +1,3 @@
+<div *ngFor="let row of _world; let rowindex=index" style="height: 40px; overflow: hidden;" >
+      <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [value]=col style="width: 40px; height: 40px; display: inline-block;">{{ col }}</square>
+</div>
