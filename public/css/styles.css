@@ -3,6 +3,14 @@ body {
     color: #000;
 }
 
+.wrap {
+	width: 1030px;
+}
+
+input {
+	width: 100%;
+}
+
 .vertical-center:before {    /* create a full-height inline block pseudo=element */
   content: " ";
   display: inline-block;

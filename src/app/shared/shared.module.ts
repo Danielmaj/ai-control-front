@@ -5,11 +5,11 @@ import { RouterModule } from '@angular/router';
 
 // import { TableComponent } from './table';
 // import { InputComponent } from './input';
-// import { NavbarComponent } from './navbar';
+import { NavbarComponent } from './navbar';
 
 @NgModule({
   imports:      [ CommonModule, RouterModule, FormsModule ],
-  // declarations: [ TableComponent, NavbarComponent, InputComponent ],
-  // exports:      [ TableComponent, NavbarComponent, InputComponent ]
+  declarations: [ NavbarComponent ],
+  exports:      [ NavbarComponent ]
 })
 export class SharedModule { }

@@ -1,0 +1,20 @@
+.happiness {
+	background: yellow;
+	height: 100px;
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+.graph {
+	background: blue;
+	height: 150px;
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+.visualization {
+	background: red;
+	height: 300px;
+	margin-bottom: 20px;
+	width: 100%;
+}

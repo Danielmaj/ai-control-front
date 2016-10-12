@@ -1,9 +1,32 @@
-<!-- <div [ngGrid]="{'resizeable': false, 'margins': [5, 10]}">
-    <div *ngFor="let box of boxes" [(ngGridItem)]="box.config">
-        <div class="title">{{box.title}}</div>
-        <p>{{box.text}}</p>
-    </div>
-</div> -->
-<world [world]="network.world"></world>
-<button type="button" (click)="getWorld()">New world</button>
-<button type="button" (click)="deleteWorld()">Delete world</button>
+<section class="main">
+	<div class="wrap container">
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="row">
+					<div class="col-xs-3">
+						<div>PLAY</div>
+						<div>EDIT</div>
+						<div>
+							Change reward
+							<input type="text">
+						</div>
+						<div>
+							Change intelligence
+							<input type="text">
+						</div>
+					</div>
+					<div class="col-xs-9">
+						<world [world]="network.world"></world>
+						<button type="button" (click)="getWorld()">New world</button>
+						<button type="button" (click)="deleteWorld()">Delete world</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="happiness"></div>
+				<div class="graph"></div>
+				<div class="visualization"></div>
+			</div>
+		</div>
+	</div>
+</section>

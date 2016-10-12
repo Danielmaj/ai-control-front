@@ -1,0 +1,15 @@
+.header {
+	height: 100px;
+}
+
+.menu {
+    height: 100%;
+}
+
+.menu .item {
+    padding: 5px 15px;
+}
+
+div {
+    height: 100%;
+}
