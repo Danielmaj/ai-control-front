@@ -6,6 +6,7 @@
     "start": "webpack-dev-server --inline --progress --port 3000",
     "test": "karma start",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --progress --profile --bail",
+    "preinstall": "npm i typings -g",
     "postinstall": "typings install"
   },
   "licenses": [
