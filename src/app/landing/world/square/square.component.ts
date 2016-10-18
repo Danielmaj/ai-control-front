@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'square',
@@ -11,11 +11,20 @@ export class SquareComponent {
 	@Input() column: number;
 	@Input() value: number;
 
+	@Output() valueChange = new EventEmitter();
+
 	constructor(
 
 	) {}
 
 	ngOnInit() {
 
+	}
+
+	onClick(row: number, column: number) {
+		this.value++;
+		this.valueChange.emit({
+			value: this.value,
+		})
 	}
 }

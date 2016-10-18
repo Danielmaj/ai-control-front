@@ -21,8 +21,13 @@ export class LandingComponent {
 		this.getWorld();
 	}
 
+	log(data: any) {
+		console.log(data);
+	}
+
 	getWorld() {
 		this._networkService.getNetwork().then((network) => {
+			console.log(network);
 			this.network = network;
 		});
 	}
