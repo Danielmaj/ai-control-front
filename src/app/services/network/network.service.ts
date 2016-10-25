@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
-import { Network } from './';
+import { Network } from '../../models';
+// import { Network } from 'app/models';
 
 @Injectable()
 export class NetworkService {
@@ -56,9 +57,9 @@ export class NetworkService {
             },
             happiness: 5
         };
-        var test = data as Network;
+        var test = new Network(data);
         console.log(test);
-        return Promise.resolve(data);
+        return Promise.resolve(test);
     }
 
     // getContent(id): Promise<Object> {

@@ -2,6 +2,14 @@ import { Component } from '@angular/core';
 
 import { NetworkService } from '../services';
 
+// var helpers = require('../../../config/helpers');
+// console.log('helpers', helpers.root('src'));
+
+// var path = require('path');
+// console.log(path);
+// console.log(__dirname);
+// var ROOT_FOLDER = path.resolve(__dirname, '..');
+// console.log(ROOT_FOLDER);
 
 @Component({
   selector: 'landing',

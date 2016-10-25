@@ -11,6 +11,13 @@ module.exports = {
   },
 
   resolve: {
+    alias: {
+        app: helpers.root('src/app')
+    },
+    modules: [
+        helpers.root('src'),
+        helpers.root('node_modules')
+    ],
     extensions: ['', '.js', '.ts']
   },
 
