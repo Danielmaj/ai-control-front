@@ -38,10 +38,10 @@ export class Square {
 
 	getContent() {
 		for (var i = Square.layerPriority.length - 1; i >= 0; i--) {
-			if (Square.layerPriority[i]) {
-				return i;
+			if (this.content[Square.layerPriority[i]]) {
+				return Square.layerPriority[i];
 			}
 		}
-		return 0;
+		return '';
 	}
 }

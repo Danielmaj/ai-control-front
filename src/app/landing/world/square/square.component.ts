@@ -11,20 +11,11 @@ export class SquareComponent {
 	@Input() column: number;
 	@Input() value: number;
 
-	@Output() valueChange = new EventEmitter();
-
 	constructor(
 
 	) {}
 
 	ngOnInit() {
 
-	}
-
-	onClick(row: number, column: number) {
-		this.value++;
-		this.valueChange.emit({
-			value: this.value,
-		})
 	}
 }
