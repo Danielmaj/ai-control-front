@@ -11,16 +11,16 @@ export class Network {
 }
 
 export class World {
-	public grid: Square[][] = [];
+	public grid: Square[][][] = [];
 	constructor(length: number, width: number, layers = {}) {
 		for (var i = 0; i < length; ++i) {
-			var row: Square[] = [];
+			var row: Square[][] = [];
 			for (var j = 0; j < width; ++j) {
 				var square = new Square();
 				for (var key in layers) {
-					square.setContent(key, layers[key][i][j]);
+					square.setContentLayer(key, layers[key][i][j]);
 				}
-				row.push(square);
+				row.push([square]);
 			}
 			this.grid.push(row);
 		}
@@ -32,11 +32,11 @@ export class Square {
 
 	constructor(public content = {}) {}
 
-	setContent(layer: string, value: number) {
+	setContentLayer(layer: string, value: number) {
 		this.content[layer] = value;
 	}
 
-	getContent() {
+	getContent(): string {
 		for (var i = Square.layerPriority.length - 1; i >= 0; i--) {
 			if (this.content[Square.layerPriority[i]]) {
 				return Square.layerPriority[i];

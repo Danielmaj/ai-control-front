@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Square } from '../../../models';
 
 @Component({
   selector: 'square',
@@ -9,7 +10,9 @@ export class SquareComponent {
 
 	@Input() row: number;
 	@Input() column: number;
-	@Input() value: number;
+	@Input() value: Square[];
+
+	@Output() valueChange = new EventEmitter<Square[]>();
 
 	constructor(
 
@@ -17,5 +20,9 @@ export class SquareComponent {
 
 	ngOnInit() {
 
+	}
+
+	logValue() {
+		console.log(this.value);
 	}
 }

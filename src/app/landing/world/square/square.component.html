@@ -1,3 +1,4 @@
-<div class="square {{ value }}">
-	{{ value }}
+<div class="square {{ value[0]?.getContent() }}">
+	{{ value[0]?.getContent() }}
+	<button (click)="logValue()">log</button>
 </div>

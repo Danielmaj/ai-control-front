@@ -1,17 +1,21 @@
-<div *ngFor="let row of _world?.grid; let rowindex=index" [dragula]='"the-bag"' [dragulaModel]=row>
-    <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [value]="col.getContent()"></square>
+<div *ngFor="let row of world?.grid; let rowindex=index" class="row">
+    <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"' [dragulaModel]="col"></square>
 </div>
-<div class='wrapper'>
+<!-- <div class='wrapper'>
 	<div class='container' *ngFor='let group of groups' [dragula]='"nested-bag"'>
 		<div *ngFor='let item of group.items' [innerHtml]='item.name'></div>
 	</div>
-</div>
+</div> -->
 
-<div class='wrapper'>
+<!-- <div class='wrapper'>
   <div class='container' [dragula]='"another-bag"' [dragulaModel]='many'>
     <div *ngFor='let text of many' [innerHtml]='text'></div>
   </div>
   <div class='container' [dragula]='"another-bag"' [dragulaModel]='many2'>
     <div *ngFor='let text of many2' [innerHtml]='text'></div>
   </div>
+</div> -->
+<div [dragula]='"filler-bag"' [dragulaModel]="filler">
+	<square *ngFor="let item of filler; let itemindex=index" [row]=itemindex [column]=itemindex [value]="item"></square>
 </div>
+<button (click)="logWorld()">Log</button>
