@@ -1,6 +1,13 @@
-<div *ngFor="let row of world?.grid; let rowindex=index" class="row">
-    <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"' [dragulaModel]="col"></square>
-</div>
+<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
+	<div class="row" style="display: flex">
+	<!-- <div *ngFor="let row of world?.grid; let rowindex=index" class="row"> -->
+	    <!-- <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"'></square> -->
+	    <template ngFor let-col [ngForOf]="row" let-colindex="index">
+	    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"'></square>
+	    	<square class="placeholder"></square>
+		</template>
+	</div>
+</template>
 <!-- <div class='wrapper'>
 	<div class='container' *ngFor='let group of groups' [dragula]='"nested-bag"'>
 		<div *ngFor='let item of group.items' [innerHtml]='item.name'></div>
@@ -15,7 +22,18 @@
     <div *ngFor='let text of many2' [innerHtml]='text'></div>
   </div>
 </div> -->
-<div [dragula]='"filler-bag"' [dragulaModel]="filler">
-	<square *ngFor="let item of filler; let itemindex=index" [row]=itemindex [column]=itemindex [value]="item"></square>
+<div [dragula]='"the-bag"' class="filler-bag">
+	<square *ngFor="let item of fillers; let itemindex=index" [row]="0" [column]=itemindex [value]="item"></square>
 </div>
-<button (click)="logWorld()">Log</button>
+<div>
+	<input [(ngModel)]="swapper.aX" name="aX">
+	<input [(ngModel)]="swapper.aY" name="aY">
+	<input [(ngModel)]="swapper.bX" name="bX">
+	<input [(ngModel)]="swapper.bY" name="bY">
+	<button (click)="swapSquares()">SWAP</button>
+	{{ swapper | json }}
+</div>
+<div>
+	<button (click)="resetFillers()">resetFillers</button>
+	<button (click)="logWorld()">Log</button>
+</div>

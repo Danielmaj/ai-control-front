@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule }   from '@angular/forms';
 
 import { ROUTES } from './landing.routes';
 import { LandingComponent } from './landing.component';
@@ -12,7 +13,7 @@ import { DragulaModule } from 'ng2-dragula/ng2-dragula';
 import '../../../public/css/dragula.min.css';
 
 @NgModule({
-    imports: [ ROUTES, CommonModule, SharedModule, WorldModule, DragulaModule ],
+    imports: [ ROUTES, CommonModule, SharedModule, WorldModule, DragulaModule, FormsModule ],
     declarations: [ LandingComponent, WorldComponent ],
 })
 export class LandingModule {}

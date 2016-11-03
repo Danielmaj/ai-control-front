@@ -18,7 +18,7 @@ export class WorldComponent {
 	public many: Array<string> = ['The', 'possibilities', 'are', 'endless!'];
   	public many2: Array<string> = ['Explore', 'them'];
 
-  	public filler: Square[][] = [
+  	public fillers: Square[][] = [
   		[new Square({
   			boxes: 1, 
   			delivery: 0,
@@ -44,6 +44,13 @@ export class WorldComponent {
   			playerB: 1,
   		})],
   	];
+
+  	public swapper = {
+  		aX: 0,
+  		aY: 0,
+  		bX: 0,
+  		bY: 0,
+  	}
 
 	public groups: Array<any> = [
 		{
@@ -102,9 +109,25 @@ export class WorldComponent {
 		console.log(this.world);
 	}
 
+	swapSquares() {
+		this.swapCoords(this.swapper.aX, this.swapper.aY, this.swapper.bX, this.swapper.bY);
+	}
+
+	swapCoords(aX: number, aY: number, bX: number, bY: number) {
+		console.log('swapping', aX, aY, bX, bY);
+		if (aX && aY && bX && bY) {
+			var newA = this.world.grid[bX][bY];
+			var newB = this.world.grid[aX][aY];
+			console.log('a', newA, 'b', newB);
+			this.world.grid[aX][aY] = newA;
+			this.world.grid[bX][bY] = newB;
+			console.log('a', this.world.grid[aX][aY], 'b', this.world.grid[bX][bY]);
+		}
+	}
+
 	private onDropModel(args: any) {
 		let [el, target, source] = args;
-		console.log(args);
+		console.log('dropModel', args);
 		// console.log(el);
 	 //    console.log(target);
 	 //    console.log(source);
@@ -114,18 +137,25 @@ export class WorldComponent {
 	 	// console.log(target.getAttribute('ng-reflect-row'));
 	 	// console.log(JSON.stringify(target.getAttribute('ng-reflect-dragula-model')));
 		// do something else
-		var tX = target.getAttribute('ng-reflect-row');
-		var tY = target.getAttribute('ng-reflect-column');
-		var sX = source.getAttribute('ng-reflect-row');
-		var sY = source.getAttribute('ng-reflect-column');
-		if (this.world.grid[sX][sY].length) {
-			this.world.grid[tX][tY].push(this.world.grid[sX][sY].pop()); 
+		if (target && source) {
+			// var tX = target.getAttribute('ng-reflect-row');
+			// var tY = target.getAttribute('ng-reflect-column');
+			// var sX = source.getAttribute('ng-reflect-row');
+			// var sY = source.getAttribute('ng-reflect-column');
+			// if (this.world.grid[sX][sY].length) {
+			// 	this.world.grid[tX][tY].push(this.world.grid[sX][sY].pop()); 
+			// } else {
+			// 	this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
+			// }
+			// // this.swapCoords(tX, tY, sX, sY);
+			// this.world.grid[tX] = this.world.grid[tX].slice();
+			// this.world.grid[sX] = this.world.grid[sX].slice();
+			// console.log(this.world.grid[tX][tY]);
+			// console.log(this.world.grid[sX][sY]);
+			// console.log(tX, tY, sX, sY);
 		} else {
-			this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
+			console.log('missing target or source', target, source);
 		}
-		console.log(this.world.grid[tX][tY]);
-		console.log(this.world.grid[sX][sY]);
-		console.log(tX, tY, sX, sY);
 	}
 
 	private onRemoveModel(args: any) {
@@ -158,16 +188,42 @@ export class WorldComponent {
 
 	private onDrop(args: any) {
 		let [el, target, source, sibling] = args;
-		if (target && source) {
-			var tX = target.getAttribute('ng-reflect-row');
-			var tY = target.getAttribute('ng-reflect-column');
-			var sX = source.getAttribute('ng-reflect-row');
-			var sY = source.getAttribute('ng-reflect-column');
-			// this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
-			console.log(this.world.grid[tX][tY]);
-			console.log(this.world.grid[sX][sY]);
-		}
 		console.log('onDrop', args);
+		console.log(this.fillers);
+		if (target && source) {
+			if (this.hasClass(target, 'filler-bag')) {
+				var x = source.getAttribute('ng-reflect-row');
+				var y = source.getAttribute('ng-reflect-column');
+				this.world.grid[x][y][0].content = {};
+				this.world.grid[x] = this.world.grid[x].slice();
+				this.resetFillers();
+			} else if (this.hasClass(source, 'filler-bag')) {
+				var x = target.getAttribute('ng-reflect-row');
+				var y = target.getAttribute('ng-reflect-column');
+				var column = el.getAttribute('ng-reflect-column');
+				console.log('delete', column, this.world.grid[x][y], this.fillers[column]);
+				this.world.grid[x][y][0].content = this.fillers[column][0].content;
+				this.world.grid[x] = this.world.grid[x].slice();
+				this.resetFillers();
+			} else {
+				var tX = target.getAttribute('ng-reflect-row');
+				var tY = target.getAttribute('ng-reflect-column');
+				var sX = source.getAttribute('ng-reflect-row');
+				var sY = source.getAttribute('ng-reflect-column');
+				// if (this.world.grid[sX][sY].length) {
+				// 	this.world.grid[tX][tY].push(this.world.grid[sX][sY].pop()); 
+				// } else {
+				// 	this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
+				// }
+				this.swapCoords(tX, tY, sX, sY);
+				this.world.grid[tX] = this.world.grid[tX].slice();
+				this.world.grid[sX] = this.world.grid[sX].slice();
+				console.log(this.world.grid[tX][tY]);
+				console.log(this.world.grid[sX][sY]);
+			}
+		} else {
+			console.log('missing target or source');
+		}
 		this.addClass(el, 'ex-moved');
 	}
 
@@ -188,5 +244,15 @@ export class WorldComponent {
 		// console.log(source.attributes.getNamedItem('ng-reflect-column').nodeValue);
 		// console.log(target.attributes.getNamedItem('ng-reflect-row').nodeValue);
 		// console.log(target.attributes.getNamedItem('ng-reflect-column').nodeValue);
+	}
+
+	private resetFillers() {
+		var test = this.fillers.slice();
+		this.fillers = [[new Square()]];
+		console.log(this.fillers);
+		this.fillers = test;
+		// this.fillers.push([new Square()]);
+		this.fillers[0] = this.fillers[0].slice();
+		console.log('fillers', this.fillers);
 	}
 }

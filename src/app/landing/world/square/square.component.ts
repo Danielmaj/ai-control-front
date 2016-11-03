@@ -8,9 +8,9 @@ import { Square } from '../../../models';
 })
 export class SquareComponent { 
 
-	@Input() row: number;
-	@Input() column: number;
-	@Input() value: Square[];
+	@Input() row: number = 0;
+	@Input() column: number = 0;
+	@Input() value: Square[] = [];
 
 	@Output() valueChange = new EventEmitter<Square[]>();
 
@@ -22,7 +22,11 @@ export class SquareComponent {
 
 	}
 
+	ngOnChanges() {
+		// console.log('changes', this.row, this.column, this.value);
+	}
+
 	logValue() {
-		console.log(this.value);
+		console.log(this.value[0].getContent());
 	}
 }
