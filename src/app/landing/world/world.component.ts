@@ -15,9 +15,6 @@ export class WorldComponent {
 	@Input() world: World;
 	@Output() worldChange = new EventEmitter<World>();
 
-	public many: Array<string> = ['The', 'possibilities', 'are', 'endless!'];
-  	public many2: Array<string> = ['Explore', 'them'];
-
   	public fillers: Square[][] = [
   		[new Square({
   			boxes: 1, 
@@ -52,26 +49,15 @@ export class WorldComponent {
   		bY: 0,
   	}
 
-	public groups: Array<any> = [
-		{
-			name: 'Group A',
-			items: [{name: 'Item A'},{name: 'Item B'},{name: 'Item C'},{name: 'Item D'}]
-		},
-		{
-			name: 'Group B',
-			items: [{name: 'Item 1'},{name: 'Item 2'},{name: 'Item 3'},{name: 'Item 4'}]
-		}
-	];
-
 	constructor(private dragulaService: DragulaService) {
-		// dragulaService.setOptions('the-bag', {
-		// 	accepts: function() {
-		// 		return false;
-		// 	}
-		// });
-		dragulaService.setOptions('filler-bag', {
-			copy: true,
+		dragulaService.setOptions('the-bag', {
+			accepts: (el: any, target: any, source: any, sibling: any) => { 
+				return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'));
+			}
 		});
+		// dragulaService.setOptions('filler-bag', {
+		// 	copy: true,
+		// });
 		dragulaService.drag.subscribe((value: any) => {
 			this.onDrag(value.slice(1));
 		});
@@ -184,6 +170,9 @@ export class WorldComponent {
 		let [e, el] = args;
 		console.log('onDrag', args);
 		this.removeClass(e, 'ex-moved');
+		if (!this.hasClass(el, 'filler-bag')) {
+			this.addClass(el, 'drag-start');
+		}
 	}
 
 	private onDrop(args: any) {
@@ -196,6 +185,7 @@ export class WorldComponent {
 				var y = source.getAttribute('ng-reflect-column');
 				this.world.grid[x][y][0].content = {};
 				this.world.grid[x] = this.world.grid[x].slice();
+				el.remove();
 				this.resetFillers();
 			} else if (this.hasClass(source, 'filler-bag')) {
 				var x = target.getAttribute('ng-reflect-row');
@@ -225,11 +215,14 @@ export class WorldComponent {
 			console.log('missing target or source');
 		}
 		this.addClass(el, 'ex-moved');
+		this.removeClass(el, 'drag-start');
 	}
 
 	private onOver(args: any) {
-		let [e, el, container] = args;
-		this.addClass(el, 'ex-over');
+		let [e, target, source] = args;
+		if (!(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'))) {
+			this.addClass(target, 'ex-over');
+		}
 	}
 
 	private onOut(args: any) {
@@ -247,12 +240,47 @@ export class WorldComponent {
 	}
 
 	private resetFillers() {
-		var test = this.fillers.slice();
-		this.fillers = [[new Square()]];
-		console.log(this.fillers);
-		this.fillers = test;
-		// this.fillers.push([new Square()]);
-		this.fillers[0] = this.fillers[0].slice();
-		console.log('fillers', this.fillers);
+		this.emptyFillers();
+		this.setFillers();
+		// var test = this.fillers.slice();
+		// this.fillers = [];
+		// console.log('fillers empty', this.fillers);
+		// this.fillers = test;
+		// // this.fillers.push([new Square()]);
+		// // this.fillers[0] = this.fillers[0].slice();
+		// console.log('fillers', this.fillers);
+	}
+
+	private emptyFillers() {
+		this.fillers = [];
+	}
+
+	private setFillers() {
+		this.fillers = [
+	  		[new Square({
+	  			boxes: 1, 
+	  			delivery: 0,
+	  			playerA: 0,
+	  			playerB: 0,
+	  		})],
+	  		[new Square({
+	  			boxes: 0, 
+	  			delivery: 1,
+	  			playerA: 0,
+	  			playerB: 0,
+	  		})],
+	  		[new Square({
+	  			boxes: 0, 
+	  			delivery: 0,
+	  			playerA: 1,
+	  			playerB: 0,
+	  		})],
+	  		[new Square({
+	  			boxes: 0, 
+	  			delivery: 0,
+	  			playerA: 0,
+	  			playerB: 1,
+	  		})],
+	  	];
 	}
 }

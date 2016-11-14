@@ -23,17 +23,28 @@
   </div>
 </div> -->
 <div [dragula]='"the-bag"' class="filler-bag">
-	<square *ngFor="let item of fillers; let itemindex=index" [row]="0" [column]=itemindex [value]="item"></square>
+	<!-- <square *ngFor="let item of fillers; let itemindex=index" [row]="0" [column]=itemindex [value]="item"></square> -->
+	<filler *ngFor="let item of fillers; let itemindex=index" [row]="0" [column]=itemindex [value]="item" class="square {{ item[0]?.getContent() }}"></filler>
+	<!-- <template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
+		<div class="square {{ item[0]?.getContent() }}" ng-reflect-column=itemindex>
+			{{ item[0]?.getContent() }}
+		</div>
+	</template> -->
 </div>
-<div>
+<!-- <div>
 	<input [(ngModel)]="swapper.aX" name="aX">
 	<input [(ngModel)]="swapper.aY" name="aY">
 	<input [(ngModel)]="swapper.bX" name="bX">
 	<input [(ngModel)]="swapper.bY" name="bY">
 	<button (click)="swapSquares()">SWAP</button>
 	{{ swapper | json }}
-</div>
+</div> -->
 <div>
 	<button (click)="resetFillers()">resetFillers</button>
+<!-- 	<button (click)="emptyFillers()">emptyFillers</button>
+	<button (click)="setFillers()">setFillers</button> -->
 	<button (click)="logWorld()">Log</button>
+</div>
+<div>
+	{{ fillers | json }}
 </div>

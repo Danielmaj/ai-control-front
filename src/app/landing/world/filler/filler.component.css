@@ -1,4 +1,4 @@
-.square, .drag-start {
+filler {
 	width: 45px; 
 	height: 45px;
 	line-height: 20px;
@@ -19,45 +19,4 @@
 
     border: solid 1px black;
     overflow: hidden;
-}
-
-.drag-start {
-	border: 3px solid red;
-}
-
-.square:hover {
-	border: solid 3px green;
-	padding: 0;
-}
-
-.square.boxes {
-	background-color: #a52a2a;
-}
-
-.square.delivery {
-	background-color: #444641;
-}
-
-.square.playerA {
-	background-color: red;
-}
-
-.square.playerB {
-	background-color: #7b9e26;
-}
-
-.filler-bag .gu-transit {
-	display: none;
-}
-
-.ex-over .square, .filler-bag.ex-over .square.gu-transit {
-	display: none;
-}
-
-.filler-bag.ex-over .square {
-	display: inline-block;
-}
-
-.ex-over .square.gu-transit {
-	display: inline-block;
 }

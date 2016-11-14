@@ -1,13 +1,13 @@
 export class Network {
-    world: World;
-    happiness: number;
+	world: World;
+	happiness: number;
 
-    constructor(data = {world: {}, happiness: 0}) {
-    	if (data.world) {
-    		this.world = new World(10, 10, data.world);
-    	}
-    	this.happiness = data.happiness;
-    }
+	constructor(data = {world: {}, happiness: 0}) {
+		if (data.world) {
+			this.world = new World(10, 10, data.world);
+		}
+		this.happiness = data.happiness;
+	}
 }
 
 export class World {
