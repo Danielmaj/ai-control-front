@@ -58,6 +58,6 @@
 	display: inline-block;
 }
 
-.ex-over .square.gu-transit {
+.ex-over .square.gu-transit, .ex-over .gu-transit .square {
 	display: inline-block;
 }

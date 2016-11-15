@@ -8,10 +8,6 @@
 	line-height: 0;
 }
 
-.placeholder {
-	display: none;
-}
-
 .filler-bag.ex-over {
 	border: 3px solid red;
 }

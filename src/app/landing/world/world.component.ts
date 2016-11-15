@@ -58,6 +58,9 @@ export class WorldComponent {
 		// dragulaService.setOptions('filler-bag', {
 		// 	copy: true,
 		// });
+		dragulaService.shadow.subscribe((value: any) => {
+			this.onShadow(value.slice(1));
+		});
 		dragulaService.drag.subscribe((value: any) => {
 			this.onDrag(value.slice(1));
 		});
@@ -166,6 +169,10 @@ export class WorldComponent {
 		}
 	}
 
+	private onShadow(args: any) {
+		let [el, target, source] = args;
+	}
+
 	private onDrag(args: any) {
 		let [e, el] = args;
 		console.log('onDrag', args);
@@ -233,6 +240,7 @@ export class WorldComponent {
 	private onCancel(args: any) {
 		console.log('cancel', args);
 		let [el, target, source] = args;
+		this.removeClass(source, 'drag-start');
 		// console.log(source.attributes.getNamedItem('ng-reflect-row').nodeValue);
 		// console.log(source.attributes.getNamedItem('ng-reflect-column').nodeValue);
 		// console.log(target.attributes.getNamedItem('ng-reflect-row').nodeValue);
