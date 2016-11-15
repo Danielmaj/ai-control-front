@@ -21,6 +21,14 @@
     overflow: hidden;
 }
 
+.square {
+	display: none;
+}
+
+.square:only-child, .square.gu-mirror {
+	display: inline-block;
+}
+
 .drag-start {
 	border: 3px solid red;
 }
@@ -46,18 +54,10 @@
 	background-color: #7b9e26;
 }
 
-.filler-bag .gu-transit {
+.filler-bag .gu-transit, .filler-bag .square.gu-transit {
 	display: none;
 }
 
-.ex-over .square, .filler-bag.ex-over .square.gu-transit {
-	display: none;
-}
-
-.filler-bag.ex-over .square {
-	display: inline-block;
-}
-
-.ex-over .square.gu-transit, .ex-over .gu-transit .square {
+.square.gu-transit, .gu-transit .square {
 	display: inline-block;
 }

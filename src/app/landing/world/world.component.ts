@@ -176,7 +176,7 @@ export class WorldComponent {
 	private onDrag(args: any) {
 		let [e, el] = args;
 		console.log('onDrag', args);
-		this.removeClass(e, 'ex-moved');
+		// this.removeClass(e, 'ex-moved');
 		if (!this.hasClass(el, 'filler-bag')) {
 			this.addClass(el, 'drag-start');
 		}
@@ -221,7 +221,7 @@ export class WorldComponent {
 		} else {
 			console.log('missing target or source');
 		}
-		this.addClass(el, 'ex-moved');
+		// this.addClass(el, 'ex-moved');
 		this.removeClass(el, 'drag-start');
 	}
 
