@@ -71,6 +71,10 @@ export class NetworkService {
         return Promise.resolve(test);
     }
 
+    sendWorld(world: any): Promise<boolean> {
+        return Promise.resolve(true);
+    }
+
     // getContent(id): Promise<Object> {
     //     return this.http.get(this._contentUrl + id)
     //         .toPromise()

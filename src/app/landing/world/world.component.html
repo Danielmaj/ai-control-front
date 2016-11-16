@@ -1,42 +1,27 @@
-<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
-	<div class="row" style="display: flex">
-	<!-- <div *ngFor="let row of world?.grid; let rowindex=index" class="row"> -->
-	    <!-- <square *ngFor="let col of row; let colindex=index" [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"'></square> -->
-	    <template ngFor let-col [ngForOf]="row" let-colindex="index">
-	    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"'></square>
+<template [ngIf]="editable">
+	<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
+		<div class="row" style="display: flex">
+		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
+		    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"'></square>
+			</template>
+		</div>
+	</template>
+	<div [dragula]='"the-bag"' class="filler-bag">
+		<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
+			<square [row]="0" [column]=itemindex [value]="item"></square>
 		</template>
 	</div>
-</template>
-<!-- <div class='wrapper'>
-	<div class='container' *ngFor='let group of groups' [dragula]='"nested-bag"'>
-		<div *ngFor='let item of group.items' [innerHtml]='item.name'></div>
+	<div>
+		<button (click)="resetFillers()">resetFillers</button>
+		<button (click)="logWorld()">Log</button>
 	</div>
-</div> -->
-
-<!-- <div class='wrapper'>
-  <div class='container' [dragula]='"another-bag"' [dragulaModel]='many'>
-    <div *ngFor='let text of many' [innerHtml]='text'></div>
-  </div>
-  <div class='container' [dragula]='"another-bag"' [dragulaModel]='many2'>
-    <div *ngFor='let text of many2' [innerHtml]='text'></div>
-  </div>
-</div> -->
-<div [dragula]='"the-bag"' class="filler-bag">
-	<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
-		<square [row]="0" [column]=itemindex [value]="item"></square>
+</template>
+<template [ngIf]="!editable">
+	<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
+		<div class="row" style="display: flex">
+		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
+		    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]"></square>
+			</template>
+		</div>
 	</template>
-</div>
-<!-- <div>
-	<input [(ngModel)]="swapper.aX" name="aX">
-	<input [(ngModel)]="swapper.aY" name="aY">
-	<input [(ngModel)]="swapper.bX" name="bX">
-	<input [(ngModel)]="swapper.bY" name="bY">
-	<button (click)="swapSquares()">SWAP</button>
-	{{ swapper | json }}
-</div> -->
-<div>
-	<button (click)="resetFillers()">resetFillers</button>
-<!-- 	<button (click)="emptyFillers()">emptyFillers</button>
-	<button (click)="setFillers()">setFillers</button> -->
-	<button (click)="logWorld()">Log</button>
-</div>
+</template>

@@ -19,7 +19,10 @@ import { NetworkService } from '../services';
 })
 export class LandingComponent { 
 
-	network = {};
+	network = {
+		world: {}
+	};
+	editWorld = false;
 
 	constructor(
 		private _networkService: NetworkService
@@ -40,7 +43,15 @@ export class LandingComponent {
 		});
 	}
 
+	saveWorld() {
+		this._networkService.sendWorld(this.network.world).then((result) => {
+			this.editWorld = false;
+		})
+	}
+
 	deleteWorld() {
-		this.network = {}
+		this.network = {
+			world: {}
+		}
 	}
 }

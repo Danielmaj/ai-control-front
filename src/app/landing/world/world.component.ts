@@ -12,6 +12,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 })
 export class WorldComponent { 
 
+	@Input() editable: boolean = false;
 	@Input() world: World;
 	@Output() worldChange = new EventEmitter<World>();
 

@@ -4,19 +4,20 @@
 			<div class="col-xs-8">
 				<div class="row">
 					<div class="col-xs-3">
-						<div>PLAY</div>
-						<div>EDIT</div>
-						<div>
+						<button>PLAY</button>
+						<button (click)="editWorld=true">EDIT</button>
+						<div *ngIf="editWorld">
 							Change reward
 							<input type="text">
 						</div>
-						<div>
+						<div *ngIf="editWorld">
 							Change intelligence
 							<input type="text">
 						</div>
+						<button *ngIf="editWorld" (click)="saveWorld()">SAVE</button>
 					</div>
 					<div class="col-xs-9">
-						<world [(world)]="network.world"></world>
+						<world [editable]="editWorld" [(world)]="network.world"></world>
 						<button type="button" (click)="getWorld()">New world</button>
 						<button type="button" (click)="deleteWorld()">Delete world</button>
 						<button type="button" (click)="log(network);">Log world</button>
