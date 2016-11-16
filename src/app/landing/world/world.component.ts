@@ -15,32 +15,7 @@ export class WorldComponent {
 	@Input() world: World;
 	@Output() worldChange = new EventEmitter<World>();
 
-  	public fillers: Square[][] = [
-  		[new Square({
-  			boxes: 1, 
-  			delivery: 0,
-  			playerA: 0,
-  			playerB: 0,
-  		})],
-  		[new Square({
-  			boxes: 0, 
-  			delivery: 1,
-  			playerA: 0,
-  			playerB: 0,
-  		})],
-  		[new Square({
-  			boxes: 0, 
-  			delivery: 0,
-  			playerA: 1,
-  			playerB: 0,
-  		})],
-  		[new Square({
-  			boxes: 0, 
-  			delivery: 0,
-  			playerA: 0,
-  			playerB: 1,
-  		})],
-  	];
+  	public fillers: Square[][] = [];
 
   	public swapper = {
   		aX: 0,
@@ -55,9 +30,6 @@ export class WorldComponent {
 				return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'));
 			}
 		});
-		// dragulaService.setOptions('filler-bag', {
-		// 	copy: true,
-		// });
 		dragulaService.shadow.subscribe((value: any) => {
 			this.onShadow(value.slice(1));
 		});
@@ -87,6 +59,7 @@ export class WorldComponent {
 	}
 
 	ngOnInit() {
+		this.setFillers();
 		console.log("init");
 	}
 
@@ -117,34 +90,6 @@ export class WorldComponent {
 	private onDropModel(args: any) {
 		let [el, target, source] = args;
 		console.log('dropModel', args);
-		// console.log(el);
-	 //    console.log(target);
-	 //    console.log(source);
-	 	console.log(target.attributes);
-	 	// console.log(target.attributes.getNamedItem('ng-reflect-row').value);
-	 	// console.log(JSON.stringify(target.attributes.getNamedItem('ng-reflect-dragula-model').value));
-	 	// console.log(target.getAttribute('ng-reflect-row'));
-	 	// console.log(JSON.stringify(target.getAttribute('ng-reflect-dragula-model')));
-		// do something else
-		if (target && source) {
-			// var tX = target.getAttribute('ng-reflect-row');
-			// var tY = target.getAttribute('ng-reflect-column');
-			// var sX = source.getAttribute('ng-reflect-row');
-			// var sY = source.getAttribute('ng-reflect-column');
-			// if (this.world.grid[sX][sY].length) {
-			// 	this.world.grid[tX][tY].push(this.world.grid[sX][sY].pop()); 
-			// } else {
-			// 	this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
-			// }
-			// // this.swapCoords(tX, tY, sX, sY);
-			// this.world.grid[tX] = this.world.grid[tX].slice();
-			// this.world.grid[sX] = this.world.grid[sX].slice();
-			// console.log(this.world.grid[tX][tY]);
-			// console.log(this.world.grid[sX][sY]);
-			// console.log(tX, tY, sX, sY);
-		} else {
-			console.log('missing target or source', target, source);
-		}
 	}
 
 	private onRemoveModel(args: any) {
@@ -185,7 +130,6 @@ export class WorldComponent {
 	private onDrop(args: any) {
 		let [el, target, source, sibling] = args;
 		console.log('onDrop', args);
-		console.log(this.fillers);
 		if (target && source) {
 			if (this.hasClass(target, 'filler-bag')) {
 				var x = source.getAttribute('ng-reflect-row');
@@ -207,11 +151,6 @@ export class WorldComponent {
 				var tY = target.getAttribute('ng-reflect-column');
 				var sX = source.getAttribute('ng-reflect-row');
 				var sY = source.getAttribute('ng-reflect-column');
-				// if (this.world.grid[sX][sY].length) {
-				// 	this.world.grid[tX][tY].push(this.world.grid[sX][sY].pop()); 
-				// } else {
-				// 	this.world.grid[sX][sY].push(this.world.grid[tX][tY].pop()); 
-				// }
 				this.swapCoords(tX, tY, sX, sY);
 				this.world.grid[tX] = this.world.grid[tX].slice();
 				this.world.grid[sX] = this.world.grid[sX].slice();
@@ -241,22 +180,11 @@ export class WorldComponent {
 		console.log('cancel', args);
 		let [el, target, source] = args;
 		this.removeClass(source, 'drag-start');
-		// console.log(source.attributes.getNamedItem('ng-reflect-row').nodeValue);
-		// console.log(source.attributes.getNamedItem('ng-reflect-column').nodeValue);
-		// console.log(target.attributes.getNamedItem('ng-reflect-row').nodeValue);
-		// console.log(target.attributes.getNamedItem('ng-reflect-column').nodeValue);
 	}
 
 	private resetFillers() {
 		this.emptyFillers();
 		this.setFillers();
-		// var test = this.fillers.slice();
-		// this.fillers = [];
-		// console.log('fillers empty', this.fillers);
-		// this.fillers = test;
-		// // this.fillers.push([new Square()]);
-		// // this.fillers[0] = this.fillers[0].slice();
-		// console.log('fillers', this.fillers);
 	}
 
 	private emptyFillers() {
