@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'ait-navbar',
@@ -10,7 +11,7 @@ export class NavbarComponent {
     title: string = "AI control task";
     
     constructor(
-
+    	private _router: Router
     ) {
     }
 
