@@ -27,7 +27,28 @@
 			<div class="col-xs-4">
 				<div class="happiness"></div>
 				<div class="graph"></div>
-				<div class="visualization"></div>
+				<div class="visualization">
+					<button (click)="tsneTest()">Test</button>
+					<button (click)="stopTsne()">Stop</button>
+					<button (click)="continueTsne()">Continue</button>
+					<button (click)="tsneSteps(1)">Step</button>
+					<button (click)="tsneSteps(10)">Step x 10</button>
+					<button (click)="tsneSteps(100)">Step x 100</button>
+					<!-- <template ngFor let-row [ngForOf]="points" let-rowindex="index">
+						<div class="">
+						    {{ row | json }}
+						</div>
+					</template> -->
+					<svg>
+						<template ngFor let-point [ngForOf]="points" let-rowindex="index">
+		                    <svg:circle
+		                    	[attr.fill]="color"
+		                        [attr.cx]="point[0]*10 + 150"
+		                        [attr.cy]="point[1]*10 + 100"
+		                        [attr.r]="3" />
+	                    </template>
+                   	</svg>
+				</div>
 			</div>
 		</div>
 	</div>
