@@ -34,6 +34,7 @@ export class LandingComponent {
 	tsne: any;
 	dataObservable: BehaviorSubject<number[][]> = new BehaviorSubject<number[][]>([]);
 	points: number[][];
+	pointLabels: string[];
 	dists: number[][] = [];
 
 	fakeData: any[] = [];
@@ -47,9 +48,13 @@ export class LandingComponent {
 
 	tsneOptions = {
 		epsilon: 10, // epsilon is learning rate (10 = default)
-		perplexity: 10, // roughly how many neighbors each point influences (30 = default)
+		perplexity: 30, // roughly how many neighbors each point influences (30 = default)
 		dim: 2, // dimensionality of the embedding (2 = default)
 	};
+
+	happinessTimer = Observable.timer(0,100);
+	happinessData: number[] = [];
+	happinessRunner: Subscription;
 
 	constructor(
 		private _networkService: NetworkService
@@ -80,24 +85,48 @@ export class LandingComponent {
 		});
 	}
 
-	sleep(ms: number): Promise<any> {
-	  return new Promise(resolve => setTimeout(resolve, ms));
+	// sleep(ms: number): Promise<any> {
+	//   return new Promise(resolve => setTimeout(resolve, ms));
+	// }
+
+	continueHappiness(): void {
+		if (!this.happinessRunner || this.happinessRunner.closed) {
+			this.happinessRunner = this.happinessTimer.subscribe(() => this.happinessStep());
+		}
+	}
+
+	happinessStep(): void {
+		// let length = 30;
+		// console.log(Math.random());
+		this.happinessData.push(Math.random());
+		// if (this.happinessData.length > length) {
+			this.happinessData = this.happinessData.slice(-30);
+		// }
+	}
+
+	stopHappiness(): void {
+		if (this.happinessRunner) {
+			this.happinessRunner.unsubscribe();
+		}
 	}
 
 	generateData(): void {
 		var data: any[][] = [];
+		var labels: string[] = [];
 		// i%this.side + ', ' + Math.floor(i/this.side)
 		for (var i = 0; i < this.side; ++i) {
 			for (var j = 0; j < this.side; ++j) {
 				for (var k = 0; k < this.side; ++k) {
 					for (var l = 0; l < this.side; ++l) {
 						data.push([i, j, k, l]);
+						labels.push("Coords: " + [i,j,k,l].join(", "));
 					}
 				}
 			}
 			// data[i] = [i%this.side, Math.floor(i/this.side)]
 		}
 		this.fakeData = data;
+		this.pointLabels = labels;
 		var size = data.length;
 		var dists: number[][] = [];
 		for(var i = 0; i < size; i++) {

@@ -25,7 +25,23 @@
 				</div>
 			</div>
 			<div class="col-xs-4">
-				<div class="happiness"></div>
+				<div class="happiness">
+					<button (click)="stopHappiness()">Stop</button>
+					<button (click)="continueHappiness()">Continue</button>
+					<svg>
+						<template ngFor let-point [ngForOf]="happinessData" let-rowindex="index">
+							<svg:g>
+			                    <svg:title>Test</svg:title>
+			                    <svg:circle
+			                    	[attr.title]="Test"
+			                    	[attr.fill]="color"
+			                        [attr.cx]="rowindex * 10 + 10"
+			                        [attr.cy]="point * 30 + 20"
+			                        [attr.r]="3" />
+		                   	</svg:g>
+	                    </template>
+                   	</svg>
+				</div>
 				<div class="graph"></div>
 				<div class="visualization">
 					<button (click)="tsneTest()">Test</button>
@@ -41,11 +57,15 @@
 					</template> -->
 					<svg>
 						<template ngFor let-point [ngForOf]="points" let-rowindex="index">
-		                    <svg:circle
-		                    	[attr.fill]="color"
-		                        [attr.cx]="point[0]*10 + 150"
-		                        [attr.cy]="point[1]*10 + 100"
-		                        [attr.r]="3" />
+							<svg:g>
+			                    <svg:title>Test</svg:title>
+			                    <svg:circle
+			                    	[attr.title]="Test"
+			                    	[attr.fill]="color"
+			                        [attr.cx]="point[0]*10 + 150"
+			                        [attr.cy]="point[1]*10 + 100"
+			                        [attr.r]="3" />
+		                   	</svg:g>
 	                    </template>
                    	</svg>
 				</div>
