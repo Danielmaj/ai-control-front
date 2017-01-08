@@ -138,25 +138,25 @@ export class WorldComponent {
 		console.log('onDrop', args);
 		if (target && source) {
 			if (this.hasClass(target, 'filler-bag')) {
-				var x = source.getAttribute('ng-reflect-row');
-				var y = source.getAttribute('ng-reflect-column');
+				var x = source.getAttribute('data-row');
+				var y = source.getAttribute('data-column');
 				this.world.grid[x][y][0].content = {};
 				this.world.grid[x] = this.world.grid[x].slice();
 				el.remove();
 				this.resetFillers();
 			} else if (this.hasClass(source, 'filler-bag')) {
-				var x = target.getAttribute('ng-reflect-row');
-				var y = target.getAttribute('ng-reflect-column');
-				var column = el.getAttribute('ng-reflect-column');
+				var x = target.getAttribute('data-row');
+				var y = target.getAttribute('data-column');
+				var column = el.getAttribute('data-column');
 				console.log('delete', column, this.world.grid[x][y], this.fillers[column]);
 				this.world.grid[x][y][0].content = this.fillers[column][0].content;
 				this.world.grid[x] = this.world.grid[x].slice();
 				this.resetFillers();
 			} else {
-				var tX = target.getAttribute('ng-reflect-row');
-				var tY = target.getAttribute('ng-reflect-column');
-				var sX = source.getAttribute('ng-reflect-row');
-				var sY = source.getAttribute('ng-reflect-column');
+				var tX = target.getAttribute('data-row');
+				var tY = target.getAttribute('data-column');
+				var sX = source.getAttribute('data-row');
+				var sY = source.getAttribute('data-column');
 				this.swapCoords(tX, tY, sX, sY);
 				this.world.grid[tX] = this.world.grid[tX].slice();
 				this.world.grid[sX] = this.world.grid[sX].slice();
