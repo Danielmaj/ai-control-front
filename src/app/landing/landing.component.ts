@@ -72,6 +72,10 @@ export class LandingComponent {
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
 		console.log(this.tsne);
 		this.getWorld();
+		this._networkService.connect().subscribe((data) => {
+			console.log('socket');
+			console.log(data);
+		});
 	}
 
 	log(data: any) {

@@ -2,15 +2,48 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Observer } from 'rxjs/Observer';
+
 import { Network } from '../../models';
 // import { Network } from 'app/models';
 
 @Injectable()
 export class NetworkService {
 
-    private _contentUrl = 'http://localhost:8000/api/content/page/';
+    // https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac#.eujlbe8a0
+    // private _contentUrl = 'http://localhost:8000/api/content/page/';
+    private url = 'ws://127.0.0.1:9000';
+    private socket: Subject<MessageEvent>;
 
     constructor(private _http: Http) {}
+
+    create(url: string): Subject<MessageEvent> {
+        let ws = new WebSocket(url);
+        let observable = Observable.create(
+            (obs: Observer<MessageEvent>) => {
+                ws.onmessage = obs.next.bind(obs);
+                ws.onerror = obs.error.bind(obs);
+                ws.onclose = obs.complete.bind(obs);
+                return ws.close.bind(ws);
+            }
+        );
+        let observer = {
+            next: (data: Object) => {
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify(data));
+                }
+            },
+        };
+        return Subject.create(observer, observable);
+    }
+
+    connect(): Subject<MessageEvent> {
+        if(!this.socket) {
+            this.socket = this.create(this.url);
+        }
+        return this.socket;
+    }
 
     getNetwork(): Promise<Network> {
         var data = {
