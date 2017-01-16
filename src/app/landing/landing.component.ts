@@ -56,6 +56,8 @@ export class LandingComponent {
 	happinessData: number[] = [];
 	happinessRunner: Subscription;
 
+	test: any;
+
 	constructor(
 		private _networkService: NetworkService
 	) {
@@ -72,7 +74,8 @@ export class LandingComponent {
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
 		console.log(this.tsne);
 		this.getWorld();
-		this._networkService.connect().subscribe((data) => {
+		this.test = this._networkService.connect()
+		this.test.subscribe((data: any) => {
 			console.log('socket');
 			console.log(data);
 		});
@@ -80,6 +83,15 @@ export class LandingComponent {
 
 	log(data: any) {
 		console.log(data);
+	}
+
+	sendWebsocket() {
+		this.test.next({
+            playerA: [[0, 1]],
+            playerB: [[10, 10]],
+            boxes: [[5, 5], [4, 4], [2, 2]],
+            delyvery: [[9, 10], [8, 10]],
+        });
 	}
 
 	getWorld() {
