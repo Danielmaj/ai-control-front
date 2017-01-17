@@ -1,12 +1,52 @@
 export class Network {
-	world: World;
 	happiness: number;
+	intelligence: number;
+	reward: number;
+	world: World;
 
-	constructor(data = {world: {}, happiness: 0}) {
+	constructor(data: any) {
 		if (data.world) {
 			this.world = new World(10, 10, data.world);
+		} else {
+			this.world = new World(10, 10);
 		}
 		this.happiness = data.happiness;
+		this.intelligence = data.intelligence;
+		this.reward = data.reward;
+		for (let i = Square.layerPriority.length - 1; i >= 0; i--) {
+			let label = Square.layerPriority[i];
+			if (data[label]) {
+				for (let j = data[label].length - 1; j >= 0; j--) {
+					let position = data[label][j].position;
+					this.world.grid[position[0]][position[1]][0].setContentLayer(label, 1);
+				}
+			}
+		}
+	}
+
+	getEntities() {
+		let ret: any = {
+			happiness: this.happiness,
+			intelligence: this.intelligence,
+			reward: this.reward,
+			boxes: [],
+			delivery: [],
+			playerA: [],
+			playerB: [],
+		}
+		let length = this.world.grid.length;
+		for (let i = 0; i < length; ++i) {
+			let width = this.world.grid[i].length;
+			for (let j = 0; j < width; ++j) {
+				let content = this.world.grid[i][j][0].getContent();
+				if (content) {
+					ret[content].push({
+						position: [i, j],
+					});
+				}
+			}
+		}
+		return ret;
 	}
 }
 
@@ -28,7 +68,7 @@ export class World {
 }
 
 export class Square {
-	private static layerPriority = ['boxes', 'delivery', 'playerA', 'playerB'];
+	static layerPriority = ['boxes', 'delivery', 'playerA', 'playerB'];
 
 	constructor(public content = {}) {}
 

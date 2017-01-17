@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
-
 import { NetworkService } from '../services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import { Network } from '../models';
 
 // var helpers = require('../../../config/helpers');
 // console.log('helpers', helpers.root('src'));
@@ -27,7 +28,7 @@ declare var tsnejs: any;
 })
 export class LandingComponent { 
 
-	network = {
+	network: any = {
 		world: {}
 	};
 	editWorld = false;
@@ -56,11 +57,12 @@ export class LandingComponent {
 	happinessData: number[] = [];
 	happinessRunner: Subscription;
 
-	test: any;
+	networkSocket: any;
 
 	constructor(
 		private _networkService: NetworkService
 	) {
+		this.networkSocket = this._networkService.connect();
 	}
 
 	ngOnInit() {
@@ -74,11 +76,6 @@ export class LandingComponent {
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
 		console.log(this.tsne);
 		this.getWorld();
-		this.test = this._networkService.connect()
-		this.test.subscribe((data: any) => {
-			console.log('socket');
-			console.log(data);
-		});
 	}
 
 	log(data: any) {
@@ -86,19 +83,29 @@ export class LandingComponent {
 	}
 
 	sendWebsocket() {
-		this.test.next({
-            playerA: [[0, 1]],
-            playerB: [[10, 10]],
-            boxes: [[5, 5], [4, 4], [2, 2]],
-            delyvery: [[9, 10], [8, 10]],
-        });
+		// this.networkSocket.next({
+  //           playerA: [[0, 1]],
+  //           playerB: [[10, 10]],
+  //           boxes: [[5, 5], [4, 4], [2, 2]],
+  //           delyvery: [[9, 10], [8, 10]],
+  //       });
+		this._networkService.getNetwork().then((network) => {
+			console.log(network);
+			this.networkSocket.next(network.getEntities());
+		});
 	}
 
 	getWorld() {
-		this._networkService.getNetwork().then((network) => {
-			console.log(network);
-			this.network = network;
+		this.networkSocket.subscribe((response: any) => {
+			console.log('socket');
+			console.log(response);
+			let responseObj = JSON.parse(response.data);
+			this.network = new Network(responseObj);
 		});
+		// this._networkService.getNetwork().then((network) => {
+		// 	console.log(network);
+		// 	this.network = network;
+		// });
 	}
 
 	// sleep(ms: number): Promise<any> {
@@ -206,9 +213,12 @@ export class LandingComponent {
 	}
 
 	saveWorld() {
-		this._networkService.sendWorld(this.network.world).then((result) => {
-			this.editWorld = false;
-		})
+		// this._networkService.sendWorld(this.network.world).then((result) => {
+		// 	this.editWorld = false;
+		// });
+		// console.log(this.network.getEntities());
+		this.networkSocket.next(this.network.getEntities());
+		this.editWorld = false;
 	}
 
 	deleteWorld() {

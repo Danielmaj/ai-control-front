@@ -13,8 +13,8 @@ export class NetworkService {
 
     // https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac#.eujlbe8a0
     // private _contentUrl = 'http://localhost:8000/api/content/page/';
-    // private url = 'ws://127.0.0.1:80';
-    private url = 'ws://www7.cs.ut.ee:9000';
+    private url = 'ws://127.0.0.1:9000';
+    // private url = 'ws://www7.cs.ut.ee:9000';
     private socket: Subject<MessageEvent>;
 
     constructor(private _http: Http) {}
@@ -98,7 +98,9 @@ export class NetworkService {
                     [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
                 ],
             },
-            happiness: 5
+            happiness: 5,
+            intelligence: 5,
+            reward: 10,
         };
         var test = new Network(data);
         console.log(test);

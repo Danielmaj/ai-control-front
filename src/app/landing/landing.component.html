@@ -8,11 +8,11 @@
 						<button (click)="editWorld=true">EDIT</button>
 						<div *ngIf="editWorld">
 							Change reward
-							<input type="text">
+							<input type="text" [(ngModel)]="network.reward" name="reward">
 						</div>
 						<div *ngIf="editWorld">
 							Change intelligence
-							<input type="text">
+							<input type="text" [(ngModel)]="network.intelligence" name="intelligence">
 						</div>
 						<button *ngIf="editWorld" (click)="saveWorld()">SAVE</button>
 					</div>
