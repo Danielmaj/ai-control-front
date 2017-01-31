@@ -74,7 +74,7 @@ export class LandingComponent {
 		});
 
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
-		console.log(this.tsne);
+		// console.log(this.tsne);
 		this.getWorld();
 	}
 
@@ -102,10 +102,10 @@ export class LandingComponent {
 			let responseObj = JSON.parse(response.data);
 			this.network = new Network(responseObj);
 		});
-		// this._networkService.getNetwork().then((network) => {
-		// 	console.log(network);
-		// 	this.network = network;
-		// });
+		this._networkService.getNetwork().then((network) => {
+			console.log(network);
+			this.network = network;
+		});
 	}
 
 	// sleep(ms: number): Promise<any> {
@@ -212,13 +212,24 @@ export class LandingComponent {
 		this.dataObservable.next(this.tsne.getSolution());
 	}
 
+	toggleBox() {
+		let entitites = this.network.getEntities();
+		// console.log(entitites);
+		console.log(entitites.playerA[0].carryBox);
+		entitites.playerA[0].carryBox = !entitites.playerA[0].carryBox;
+		this.networkSocket.next(entitites);
+	}
+
 	saveWorld() {
 		// this._networkService.sendWorld(this.network.world).then((result) => {
 		// 	this.editWorld = false;
 		// });
 		// console.log(this.network.getEntities());
-		this.networkSocket.next(this.network.getEntities());
 		this.editWorld = false;
+	}
+
+	startGame() {
+		this.networkSocket.next(this.network.getEntities());
 	}
 
 	deleteWorld() {

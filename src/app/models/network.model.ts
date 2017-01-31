@@ -18,6 +18,10 @@ export class Network {
 			if (data[label]) {
 				for (let j = data[label].length - 1; j >= 0; j--) {
 					let position = data[label][j].position;
+					if (data[label][j].carryBox) {
+						console.log('carrybox');
+						this.world.grid[position[0]][position[1]][0].carryBox = true;
+					}
 					this.world.grid[position[0]][position[1]][0].setContentLayer(label, 1);
 				}
 			}
@@ -40,9 +44,13 @@ export class Network {
 			for (let j = 0; j < width; ++j) {
 				let content = this.world.grid[i][j][0].getContent();
 				if (content) {
-					ret[content].push({
+					let contentObj: any = {
 						position: [i, j],
-					});
+					}
+					if (this.world.grid[i][j][0].carryBox) {
+						contentObj.carryBox = true;
+					}
+					ret[content].push(contentObj);
 				}
 			}
 		}
@@ -69,6 +77,7 @@ export class World {
 
 export class Square {
 	static layerPriority = ['boxes', 'delivery', 'playerA', 'playerB'];
+	public carryBox = false;
 
 	constructor(public content = {}) {}
 
