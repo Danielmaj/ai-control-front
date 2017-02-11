@@ -19,7 +19,6 @@ export class Network {
 				for (let j = data[label].length - 1; j >= 0; j--) {
 					let position = data[label][j].position;
 					if (data[label][j].carryBox) {
-						console.log('carrybox');
 						this.world.grid[position[0]][position[1]][0].carryBox = true;
 					}
 					this.world.grid[position[0]][position[1]][0].setContentLayer(label, 1);

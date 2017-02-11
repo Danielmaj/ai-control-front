@@ -59,6 +59,8 @@ export class LandingComponent {
 
 	networkSocket: any;
 
+	gamePaused = false;
+
 	constructor(
 		private _networkService: NetworkService
 	) {
@@ -229,7 +231,23 @@ export class LandingComponent {
 	}
 
 	startGame() {
-		this.networkSocket.next(this.network.getEntities());
+		let gameObject = this.network.getEntities();
+		gameObject.status = 'NEW';
+		this.networkSocket.next(gameObject);
+	}
+
+	pauseGame(): void {
+		this.gamePaused = true;
+		this.networkSocket.next({
+			status: 'PAUSE',
+		});
+	}
+
+	resumeGame(): void {
+		this.gamePaused = false;
+		this.networkSocket.next({
+			status: 'RESUME',
+		});
 	}
 
 	deleteWorld() {
