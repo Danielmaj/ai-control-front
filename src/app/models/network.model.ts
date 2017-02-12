@@ -21,6 +21,9 @@ export class Network {
 					if (data[label][j].carryBox) {
 						this.world.grid[position[0]][position[1]][0].carryBox = true;
 					}
+					if (typeof data[label][j].isAlive !== 'undefined') {
+						this.world.grid[position[0]][position[1]][0].isDead = !data[label][j].isAlive;
+					}
 					this.world.grid[position[0]][position[1]][0].setContentLayer(label, 1);
 				}
 			}
@@ -49,6 +52,7 @@ export class Network {
 					if (this.world.grid[i][j][0].carryBox) {
 						contentObj.carryBox = true;
 					}
+					contentObj.isAlive = !this.world.grid[i][j][0].isDead;
 					ret[content].push(contentObj);
 				}
 			}
@@ -77,6 +81,7 @@ export class World {
 export class Square {
 	static layerPriority = ['boxes', 'delivery', 'playerA', 'playerB'];
 	public carryBox = false;
+	public isDead = false;
 
 	constructor(public content = {}) {}
 

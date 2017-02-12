@@ -92,20 +92,20 @@ export class LandingComponent {
   //           delyvery: [[9, 10], [8, 10]],
   //       });
 		this._networkService.getNetwork().then((network) => {
-			console.log(network);
+			// console.log(network);
 			this.networkSocket.next(network.getEntities());
 		});
 	}
 
 	getWorld() {
 		this.networkSocket.subscribe((response: any) => {
-			console.log('socket');
-			console.log(response);
+			// console.log('socket');
+			// console.log(response);
 			let responseObj = JSON.parse(response.data);
 			this.network = new Network(responseObj);
 		});
 		this._networkService.getNetwork().then((network) => {
-			console.log(network);
+			// console.log(network);
 			this.network = network;
 		});
 	}
@@ -217,7 +217,7 @@ export class LandingComponent {
 	toggleBox() {
 		let entitites = this.network.getEntities();
 		// console.log(entitites);
-		console.log(entitites.playerA[0].carryBox);
+		// console.log(entitites.playerA[0].carryBox);
 		entitites.playerA[0].carryBox = !entitites.playerA[0].carryBox;
 		this.networkSocket.next(entitites);
 	}

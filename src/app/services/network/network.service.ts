@@ -104,7 +104,7 @@ export class NetworkService {
             reward: 10,
         };
         var test = new Network(data);
-        console.log(test);
+        // console.log(test);
         return Promise.resolve(test);
     }
 
