@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NetworkService } from '../services';
+import { 
+	NetworkService,
+	networks,
+	values,
+} from '../services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -36,7 +40,9 @@ export class LandingComponent {
 	dataObservable: BehaviorSubject<number[][]> = new BehaviorSubject<number[][]>([]);
 	points: number[][];
 	pointLabels: string[];
+	data: any = [];
 	dists: number[][] = [];
+	values: number[] = [];
 
 	fakeData: any[] = [];
 
@@ -44,7 +50,7 @@ export class LandingComponent {
 
 	color = '#000';
 	timer: Observable<any>;
-	speed = 10;
+	speed = 10; // milliseconds per step
 	runner: Subscription;
 
 	tsneOptions = {
@@ -60,15 +66,18 @@ export class LandingComponent {
 	networkSocket: any;
 
 	gamePaused = false;
+	math: any;
 
 	constructor(
 		private _networkService: NetworkService
 	) {
 		this.networkSocket = this._networkService.connect();
+		this.math = Math;
 	}
 
 	ngOnInit() {
 		this.generateData();
+		this.values = values;
 		this.timer = Observable.timer(0,this.speed);
 		this.dataObservable.subscribe((value) => {
 			// console.log('observed', value);
@@ -136,45 +145,50 @@ export class LandingComponent {
 	}
 
 	generateData(): void {
-		var data: any[][] = [];
-		var labels: string[] = [];
-		// i%this.side + ', ' + Math.floor(i/this.side)
-		for (var i = 0; i < this.side; ++i) {
-			for (var j = 0; j < this.side; ++j) {
-				for (var k = 0; k < this.side; ++k) {
-					for (var l = 0; l < this.side; ++l) {
-						data.push([i, j, k, l]);
-						labels.push("Coords: " + [i,j,k,l].join(", "));
-					}
-				}
-			}
-			// data[i] = [i%this.side, Math.floor(i/this.side)]
-		}
-		this.fakeData = data;
-		this.pointLabels = labels;
-		var size = data.length;
-		var dists: number[][] = [];
-		for(var i = 0; i < size; i++) {
-			dists.push([]);
-			for(var j = 0; j < size; j++) {
-				dists[i].push(0);
-			}
-		}
-		// compute pairwise distances
-		for(var i = 0; i < size; i++) {
-			for(var j = i + 1; j < size; j++) {
-				dists[i][j] = 0
-				for (var k = data[i].length - 1; k >= 0; k--) {
-					dists[i][j] += Math.pow(data[i][k] - data[j][k], 2)
-				}
-				dists[i][j] = Math.sqrt(dists[i][j]) / 50;
-				dists[j][i] = dists[i][j];
-			}
-		}
-		this.dists = dists;
+		// var data: any[][] = [];
+		// var labels: string[] = [];
+		// // i%this.side + ', ' + Math.floor(i/this.side)
+		// for (var i = 0; i < this.side; ++i) {
+		// 	for (var j = 0; j < this.side; ++j) {
+		// 		for (var k = 0; k < this.side; ++k) {
+		// 			for (var l = 0; l < this.side; ++l) {
+		// 				data.push([i, j, k, l]);
+		// 				labels.push("Coords: " + [i,j,k,l].join(", "));
+		// 			}
+		// 		}
+		// 	}
+		// 	// data[i] = [i%this.side, Math.floor(i/this.side)]
+		// }
+		// this.fakeData = data;
+		// this.pointLabels = labels;
+		// var size = data.length;
+		// var dists: number[][] = [];
+		// for(var i = 0; i < size; i++) {
+		// 	dists.push([]);
+		// 	for(var j = 0; j < size; j++) {
+		// 		dists[i].push(0);
+		// 	}
+		// }
+		// // compute pairwise distances
+		// for(var i = 0; i < size; i++) {
+		// 	for(var j = i + 1; j < size; j++) {
+		// 		dists[i][j] = 0
+		// 		for (var k = data[i].length - 1; k >= 0; k--) {
+		// 			dists[i][j] += Math.pow(data[i][k] - data[j][k], 2)
+		// 		}
+		// 		dists[i][j] = Math.sqrt(dists[i][j]) / 50;
+		// 		dists[j][i] = dists[i][j];
+		// 	}
+		// }
+		// this.dists = dists;
+		// this.data = networks;
+		// this.dists = require('./result.json');
 	}
 
 	tsneTest() {
+		if (this.runner) {
+			this.runner.unsubscribe();
+		}
 		// initialize data. Here we have 3 points and some example pairwise dissimilarities
 		// var dists = [
 		// 	[1.0, 0.1, 0.2], [0.1, 1.0, 0.3], [0.2, 0.1, 1.0],
@@ -182,7 +196,8 @@ export class LandingComponent {
 		// var size = 100;		
 
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
-		this.tsne.initDataDist(this.dists);
+		// console.log('data', networks);
+		this.tsne.initDataRaw(networks);
 
 		// this.data = this.tsne.getSolution(); // Y is an array of 2-D points that you can plot
 		// for(var k = 0; k < 5; k++) {
@@ -254,5 +269,18 @@ export class LandingComponent {
 		this.network = {
 			world: {}
 		}
+	}
+
+	showState(index: number): void {
+		
+	}
+
+	componentToHex(c: number): string {
+	    let hex = c.toString(16);
+	    return hex.length == 1 ? "0" + hex : hex;
+	}
+
+	rgbToHex(r: number, g: number, b: number): string {
+	    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
 	}
 }

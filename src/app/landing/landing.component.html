@@ -69,12 +69,13 @@
 					<svg>
 						<template ngFor let-point [ngForOf]="points" let-rowindex="index">
 							<svg:g>
-			                    <svg:title>Test</svg:title>
+			                    <svg:title>Happiness {{ math.round(values[rowindex] * 100) / 100 }}% </svg:title>
 			                    <svg:circle
+			                    	(click)="showState(rowindex)"
 			                    	[attr.title]="Test"
-			                    	[attr.fill]="color"
+			                    	[attr.fill]="'#ff' + componentToHex(math.round(values[rowindex] * 255)) + '00'"
 			                        [attr.cx]="point[0]*10 + 150"
-			                        [attr.cy]="point[1]*10 + 100"
+			                        [attr.cy]="point[1]*10 + 150"
 			                        [attr.r]="3" />
 		                   	</svg:g>
 	                    </template>
