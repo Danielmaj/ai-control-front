@@ -6,7 +6,7 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 // console.log(DragulaService);
 
 @Component({
-  selector: 'world',
+  selector: 'world, [worldComponent]',
   templateUrl: './world.component.html',
   styleUrls: ['./world.component.css'],
 })
@@ -14,6 +14,7 @@ export class WorldComponent {
 
 	@Input() editable: boolean = false;
 	@Input() world: World;
+	@Input() readOnly: boolean = false;
 	@Output() worldChange = new EventEmitter<World>();
 
   	public fillers: Square[][] = [];
@@ -30,37 +31,39 @@ export class WorldComponent {
 	}
 
 	ngOnInit() {
-		this.dragulaService.setOptions('the-bag', {
-			accepts: (el: any, target: any, source: any, sibling: any) => { 
-				return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'));
-			}
-		});
-		this.dragulaService.shadow.subscribe((value: any) => {
-			this.onShadow(value.slice(1));
-		});
-		this.dragulaService.drag.subscribe((value: any) => {
-			this.onDrag(value.slice(1));
-		});
-		this.dragulaService.drop.subscribe((value: any) => {
-			console.log('drop', value);
-			this.onDrop(value.slice(1));
-		});
-		this.dragulaService.over.subscribe((value: any) => {
-			this.onOver(value.slice(1));
-		});
-		this.dragulaService.out.subscribe((value: any) => {
-			this.onOut(value.slice(1));
-		});
-		this.dragulaService.cancel.subscribe((value: any) => {
-			this.onCancel(value.slice(1));
-		});
-		this.dragulaService.dropModel.subscribe((value: any) => {
-			this.onDropModel(value.slice(1));
-		});
-		this.dragulaService.removeModel.subscribe((value: any) => {
-			this.onRemoveModel(value.slice(1));
-		});
-		this.setFillers();
+		if (!this.readOnly) {
+			this.dragulaService.setOptions('the-bag', {
+				accepts: (el: any, target: any, source: any, sibling: any) => { 
+					return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'));
+				}
+			});
+			this.dragulaService.shadow.subscribe((value: any) => {
+				this.onShadow(value.slice(1));
+			});
+			this.dragulaService.drag.subscribe((value: any) => {
+				this.onDrag(value.slice(1));
+			});
+			this.dragulaService.drop.subscribe((value: any) => {
+				console.log('drop', value);
+				this.onDrop(value.slice(1));
+			});
+			this.dragulaService.over.subscribe((value: any) => {
+				this.onOver(value.slice(1));
+			});
+			this.dragulaService.out.subscribe((value: any) => {
+				this.onOut(value.slice(1));
+			});
+			this.dragulaService.cancel.subscribe((value: any) => {
+				this.onCancel(value.slice(1));
+			});
+			this.dragulaService.dropModel.subscribe((value: any) => {
+				this.onDropModel(value.slice(1));
+			});
+			this.dragulaService.removeModel.subscribe((value: any) => {
+				this.onRemoveModel(value.slice(1));
+			});
+			this.setFillers();
+		}
 		console.log("init");
 	}
 

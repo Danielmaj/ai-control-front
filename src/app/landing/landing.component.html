@@ -23,11 +23,15 @@
 						</div>
 					</div>
 					<div class="col-xs-9">
-						<world [editable]="editWorld" [(world)]="network.world"></world>
+						<div class="world" [editable]="editWorld" [(world)]="network.world" worldComponent></div>
 						<button type="button" (click)="getWorld()">New world</button>
 						<button type="button" (click)="deleteWorld()">Delete world</button>
 						<button type="button" (click)="log(network);">Log world</button>
 						<button type="button" (click)="sendWebsocket(network);">Send</button>
+						<div *ngIf="showIllustrationWorld">
+							<button type="button" (click)="showIllustrationWorld = false">CLOSE</button>
+							<div class="world" [readOnly]="true" [editable]="false" [world]="illustrationWorld" worldComponent></div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -4,12 +4,13 @@ import {
 	NetworkService,
 	networks,
 	values,
+	worlds,
 } from '../services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Network } from '../models';
+import { Network, World } from '../models';
 
 // var helpers = require('../../../config/helpers');
 // console.log('helpers', helpers.root('src'));
@@ -64,6 +65,9 @@ export class LandingComponent {
 	happinessRunner: Subscription;
 
 	networkSocket: any;
+
+	illustrationWorld: World;
+	showIllustrationWorld: boolean = false;
 
 	gamePaused = false;
 	math: any;
@@ -272,7 +276,10 @@ export class LandingComponent {
 	}
 
 	showState(index: number): void {
-		
+		console.log('showing', index, worlds[index]);
+		this.illustrationWorld = new Network(worlds[index]).world;
+		this.showIllustrationWorld = true;
+		console.log(this.showIllustrationWorld);
 	}
 
 	componentToHex(c: number): string {

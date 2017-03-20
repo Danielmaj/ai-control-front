@@ -64,6 +64,7 @@ export class Network {
 export class World {
 	public grid: Square[][][] = [];
 	constructor(length: number, width: number, layers = {}) {
+		console.log('create world', length, width, layers);
 		for (var i = 0; i < length; ++i) {
 			var row: Square[][] = [];
 			for (var j = 0; j < width; ++j) {
