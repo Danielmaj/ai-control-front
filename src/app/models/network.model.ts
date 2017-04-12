@@ -21,8 +21,8 @@ export class Network {
 					if (data[label][j].carryBox) {
 						this.world.grid[position[0]][position[1]][0].carryBox = true;
 					}
-					if (typeof data[label][j].isAlive !== 'undefined') {
-						this.world.grid[position[0]][position[1]][0].isDead = !data[label][j].isAlive;
+					if (typeof data[label][j].IsAlive !== 'undefined') {
+						this.world.grid[position[0]][position[1]][0].isDead = !data[label][j].IsAlive;
 					}
 					this.world.grid[position[0]][position[1]][0].setContentLayer(label, 1);
 				}
@@ -52,7 +52,7 @@ export class Network {
 					if (this.world.grid[i][j][0].carryBox) {
 						contentObj.carryBox = true;
 					}
-					contentObj.isAlive = !this.world.grid[i][j][0].isDead;
+					contentObj.IsAlive = !this.world.grid[i][j][0].isDead;
 					ret[content].push(contentObj);
 				}
 			}
@@ -64,7 +64,7 @@ export class Network {
 export class World {
 	public grid: Square[][][] = [];
 	constructor(length: number, width: number, layers = {}) {
-		console.log('create world', length, width, layers);
+		// console.log('create world', length, width, layers);
 		for (var i = 0; i < length; ++i) {
 			var row: Square[][] = [];
 			for (var j = 0; j < width; ++j) {

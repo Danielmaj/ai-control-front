@@ -73,7 +73,7 @@ export class WorldComponent {
     }
 
 	ngOnChanges() {
-		console.log("changes");
+		// console.log("changes");
 	}
 
 	logWorld() {

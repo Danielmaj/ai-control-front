@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { 
+import {
 	NetworkService,
 	networks,
 	values,
@@ -72,6 +72,9 @@ export class LandingComponent {
 	gamePaused = false;
 	math: any;
 
+	private isRendering: boolean = false;
+	private prevResponse: any;
+
 	constructor(
 		private _networkService: NetworkService
 	) {
@@ -111,13 +114,21 @@ export class LandingComponent {
 	}
 
 	getWorld() {
-		this.networkSocket.subscribe((response: any) => {
+		this.networkSocket.throttleTime(300).subscribe((response: any) => {
+		// this.networkSocket.filter(() => !this.isRendering).subscribe((response: any) => {
 			// console.log('socket');
 			// console.log(response);
-			let responseObj = JSON.parse(response.data);
-			this.network = new Network(responseObj);
+			// if (!this.isRendering) {
+				console.log('rendering');
+				this.isRendering = true;
+				let responseObj = JSON.parse(response.data);
+				this.network = new Network(responseObj);
+				this.isRendering = false;
+			// } else {
+			// 	this.prevResponse = response;
+			// }
 		});
-		this._networkService.getNetwork().then((network) => {
+		this._networkService.getNetwork().then((network: any) => {
 			// console.log(network);
 			this.network = network;
 		});

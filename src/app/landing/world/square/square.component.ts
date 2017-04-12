@@ -29,6 +29,6 @@ export class SquareComponent {
 	}
 
 	logValue() {
-		console.log(this.value[0].getContent());
+		// console.log(this.value[0].getContent());
 	}
 }
