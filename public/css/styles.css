@@ -11,6 +11,10 @@ body {
 	width: 1030px;
 }
 
+button {
+  border-radius: 20px;
+}
+
 input {
 	width: 100%;
 }
