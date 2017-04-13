@@ -1,6 +1,15 @@
+.regular {
+	width: 55px; 
+	height: 55px;
+}
+
+.small {
+	width: 30px; 
+	height: 30px;
+}
+
 .square, .drag-start {
-	width: 45px; 
-	height: 45px;
+	
 	line-height: 20px;
 	padding: 2px;
 	display: inline-block;
@@ -23,6 +32,7 @@
 
 .square {
 	display: none;
+	background-size: contain;
 }
 
 .square:only-child, .square.gu-mirror {
@@ -33,25 +43,37 @@
 	border: 3px solid red;
 }
 
-.square:hover {
+.square.paused:hover {
 	border: solid 3px green;
 	padding: 0;
 }
 
 .square.boxes {
-	background-color: #a52a2a;
+	background-image: url('/public/images/box.png');
 }
 
 .square.delivery {
-	background-color: #444641;
+	background-image: url('/public/images/delivery-zone.png');
 }
 
 .square.playerA {
-	background-color: red;
+	background-image: url('/public/images/robot.png');
+}
+
+.square.playerA.has-box {
+	background-image: url('/public/images/robot-with-box.png');
+}
+
+.square.playerA.dead {
+	background-image: url('/public/images/robot-dead.png');
 }
 
 .square.playerB {
-	background-color: #7b9e26;
+	background-image: url('/public/images/human.png');
+}
+
+.square.playerB.dead {
+	background-image: url('/public/images/human-dead.png');
 }
 
 .filler-bag .gu-transit, .filler-bag .square.gu-transit {

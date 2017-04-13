@@ -1,6 +1,1 @@
-<div class="square {{ value[0]?.getContent() }}">
-	{{ value[0]?.getContent() }}
-	<span *ngIf="value[0]?.carryBox"> carryBox</span>
-	<span *ngIf="value[0]?.isDead"> dead</span>
-	<!-- <button (click)="logValue()">log</button> -->
-</div>
+<div class="square {{ size }} {{ value[0]?.getContent() }}" [class.dead]="value[0]?.isDead" [class.has-box]="value[0]?.carryBox" [class.paused]="paused"></div>

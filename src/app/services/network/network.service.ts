@@ -11,10 +11,6 @@ import { Network } from '../../models';
 @Injectable()
 export class NetworkService {
 
-    // https://medium.com/@lwojciechowski/websockets-with-angular2-and-rxjs-8b6c5be02fac#.eujlbe8a0
-    // private _contentUrl = 'http://localhost:8000/api/content/page/';
-    // private url = 'ws://127.0.0.1:9000';
-    // private url = 'ws://www7.cs.ut.ee:9000';
     private url = 'ws://ai-control-front.cs.ut.ee/ws';
     private socket: Subject<MessageEvent>;
 
@@ -47,7 +43,7 @@ export class NetworkService {
         return this.socket;
     }
 
-    getNetwork(): Promise<Network> {
+    getDefaultNetwork(): Network {
         var data = {
             world: {
                 boxes: [
@@ -103,32 +99,7 @@ export class NetworkService {
             intelligence: 5,
             reward: 10,
         };
-        var test = new Network(data);
-        // console.log(test);
-        return Promise.resolve(test);
-    }
-
-    sendWorld(world: any): Promise<boolean> {
-        return Promise.resolve(true);
-    }
-
-    // getContent(id): Promise<Object> {
-    //     return this.http.get(this._contentUrl + id)
-    //         .toPromise()
-    //         .then(response => {
-    //             return response.json();
-    //         })
-    //         .catch(this.handleError);
-    // }
-
-    // getContent(id: number): Observable<PageContent[]> {
-    //     return this.pageFactory.getContents(id).map(({data}) => {
-    //         return data.page_contents as PageContent[];
-    //     });
-    // }
-
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error);
-        return Promise.reject(error.message || error);
+        
+        return new Network(data);
     }
 }

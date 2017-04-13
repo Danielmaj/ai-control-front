@@ -1,78 +1,66 @@
 <section class="main">
 	<div class="wrap container">
 		<div class="row">
-			<div class="col-xs-8">
+			<div class="col-lg-7">
 				<div class="row">
-					<div class="col-xs-3">
-						<div *ngIf="!editWorld" class="row">
-							<button (click)="startGame()">NEW GAME</button>
-							<button *ngIf="!gamePaused" (click)="pauseGame()">PAUSE</button>
-							<button *ngIf="gamePaused" (click)="resumeGame()">RESUME</button>
-						</div>
+					<div *ngIf="!isEditingWorld" class="col-sm-12">
+						<button (click)="resetGame()">NEW GAME</button>
+						<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
+						<button *ngIf="!gamePaused" (click)="pauseGame()">PAUSE</button>
+						<button *ngIf="gamePaused" (click)="resumeGame()">RESUME</button>
+					</div>
+					<div class="col-sm-12">
+						<div class="world" [paused]="gamePaused" [editable]="isEditingWorld" [(world)]="network.world" worldComponent></div>
 						<div class="row">
-							<button (click)="editWorld=true">EDIT</button>
-							<div *ngIf="editWorld">
+							<div class="col-xs-12">
+								<button *ngIf="!isEditingWorld" (click)="editWorld()">EDIT</button>
+							</div>
+							<div class="col-sm-6" *ngIf="isEditingWorld">
 								Change reward
 								<input type="text" [(ngModel)]="network.reward" name="reward">
 							</div>
-							<div *ngIf="editWorld">
+							<div class="col-sm-6" *ngIf="isEditingWorld">
 								Change intelligence
 								<input type="text" [(ngModel)]="network.intelligence" name="intelligence">
 							</div>
-							<button *ngIf="editWorld" (click)="saveWorld()">SAVE</button>
-						</div>
-					</div>
-					<div class="col-xs-9">
-						<div class="world" [editable]="editWorld" [(world)]="network.world" worldComponent></div>
-						<button type="button" (click)="getWorld()">New world</button>
-						<button type="button" (click)="deleteWorld()">Delete world</button>
-						<button type="button" (click)="log(network);">Log world</button>
-						<button type="button" (click)="sendWebsocket(network);">Send</button>
-						<div *ngIf="showIllustrationWorld">
-							<button type="button" (click)="showIllustrationWorld = false">CLOSE</button>
-							<div class="world" [readOnly]="true" [editable]="false" [world]="illustrationWorld" worldComponent></div>
+							<div class="col-sm-6" *ngIf="isEditingWorld">
+								<button (click)="cancelEdit()">CANCEL</button>
+								<button (click)="saveWorld()">SAVE</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-lg-5">
 				<div class="happiness">
-					<button (click)="stopHappiness()">Stop</button>
-					<button (click)="continueHappiness()">Continue</button>
 					<svg>
 						<template ngFor let-point [ngForOf]="happinessData" let-rowindex="index">
 							<svg:g>
-			                    <svg:title>Test</svg:title>
+			                    <svg:title>{{ point }}</svg:title>
 			                    <svg:circle
-			                    	[attr.title]="Test"
 			                    	[attr.fill]="color"
 			                        [attr.cx]="rowindex * 10 + 10"
-			                        [attr.cy]="point * 30 + 20"
-			                        [attr.r]="3" />
+			                        [attr.cy]="(point / happinessRange) * 30 + 20"
+			                        [attr.r]="2" />
+			                    <svg:line *ngIf="rowindex > 0"
+			                    	[attr.stroke]="color"
+			                        [attr.x1]="(rowindex - 1) * 10 + 10"
+			                        [attr.y1]="(happinessData[rowindex - 1] / happinessRange) * 30 + 20"
+			                        [attr.x2]="rowindex * 10 + 10"
+			                        [attr.y2]="(point / happinessRange) * 30 + 20"
+			                        [attr.stroke-width]="2" />
 		                   	</svg:g>
 	                    </template>
                    	</svg>
 				</div>
-				<div class="graph">
-					<button (click)="toggleBox()">
-					TOGGLE BOX
-					</button>
-				</div>
 				<div class="visualization">
-					<button (click)="tsneTest()">Test</button>
-					<button (click)="stopTsne()">Stop</button>
-					<button (click)="continueTsne()">Continue</button>
-					<button (click)="tsneSteps(1)">Step</button>
-					<button (click)="tsneSteps(10)">Step x 10</button>
-					<button (click)="tsneSteps(100)">Step x 100</button>
-					<!-- <template ngFor let-row [ngForOf]="points" let-rowindex="index">
-						<div class="">
-						    {{ row | json }}
-						</div>
-					</template> -->
+					<button *ngIf="!tsneRunner" (click)="startTsne()">Start</button>
+					<button *ngIf="tsneRunner" (click)="startTsne()">Restart</button>
+					<button *ngIf="tsneRunner && !tsneRunner.closed" (click)="stopTsne()">Pause</button>
+					<button *ngIf="tsneRunner && tsneRunner.closed" (click)="continueTsne()">Continue</button>
 					<svg>
 						<template ngFor let-point [ngForOf]="points" let-rowindex="index">
-							<svg:g>
+							<svg:g class="dot">
 			                    <svg:title>Happiness {{ math.round(values[rowindex] * 100) }}% </svg:title>
 			                    <svg:circle
 			                    	(click)="showState(rowindex)"
@@ -84,6 +72,10 @@
 		                   	</svg:g>
 	                    </template>
                    	</svg>
+				</div>
+				<div *ngIf="showIllustrationWorld">
+					<button type="button" (click)="showIllustrationWorld = false">CLOSE</button>
+					<div class="world" size="small" [readOnly]="true" [editable]="false" [world]="illustrationWorld" worldComponent></div>
 				</div>
 			</div>
 		</div>

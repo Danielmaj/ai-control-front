@@ -13,8 +13,10 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 export class WorldComponent { 
 
 	@Input() editable: boolean = false;
+	@Input() paused: boolean = true;
 	@Input() world: World;
 	@Input() readOnly: boolean = false;
+	@Input() size: string = 'regular';
 	@Output() worldChange = new EventEmitter<World>();
 
   	public fillers: Square[][] = [];

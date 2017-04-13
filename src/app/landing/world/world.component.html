@@ -1,26 +1,49 @@
 <template [ngIf]="editable">
 	<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
-		<div class="row" style="display: flex">
+		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
-		    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]" [dragula]='"the-bag"' [attr.data-row]="rowindex" [attr.data-column]="colindex"></square>
+		    	<square 
+		    		[paused]="paused" 
+		    		[row]=rowindex 
+		    		[column]=colindex 
+		    		[(value)]="row
+		    		[colindex]" 
+		    		[dragula]='"the-bag"' 
+		    		[attr.data-row]="rowindex" 
+		    		[attr.data-column]="colindex"
+		    		[size]="size"
+		    	></square>
 			</template>
 		</div>
 	</template>
 	<div [dragula]='"the-bag"' class="filler-bag">
 		<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
-			<square [row]="0" [column]=itemindex [value]="item" [attr.data-row]="0" [attr.data-column]="itemindex"></square>
+			<square 
+				[paused]="paused" 
+				[row]="0" 
+				[column]=itemindex 
+				[value]="item" 
+				[attr.data-row]="0" 
+				[attr.data-column]="itemindex"
+				[size]="size"
+			></square>
 		</template>
-	</div>
-	<div>
-		<button (click)="resetFillers()">resetFillers</button>
-		<button (click)="logWorld()">Log</button>
 	</div>
 </template>
 <template [ngIf]="!editable">
 	<template ngFor let-row [ngForOf]="world?.grid" let-rowindex="index">
-		<div class="row" style="display: flex">
+		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
-		    	<square [row]=rowindex [column]=colindex [(value)]="row[colindex]" [attr.data-row]="rowindex" [attr.data-column]="colindex"></square>
+		    	<square 
+		    		[paused]="paused" 
+		    		[row]=rowindex 
+		    		[column]=colindex 
+		    		[(value)]="row
+		    		[colindex]" 
+		    		[attr.data-row]="rowindex" 
+		    		[attr.data-column]="colindex"
+		    		[size]="size"
+		    	></square>
 			</template>
 		</div>
 	</template>

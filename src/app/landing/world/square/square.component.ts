@@ -13,22 +13,8 @@ export class SquareComponent {
 	@Input() row: number = 0;
 	@Input() column: number = 0;
 	@Input() value: Square[] = [];
+	@Input() paused: boolean = true;
+	@Input() size: string = 'regular';
 
 	@Output() valueChange = new EventEmitter<Square[]>();
-
-	constructor(
-
-	) {}
-
-	ngOnInit() {
-
-	}
-
-	ngOnChanges() {
-		// console.log('changes', this.row, this.column, this.value);
-	}
-
-	logValue() {
-		// console.log(this.value[0].getContent());
-	}
 }

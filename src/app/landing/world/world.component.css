@@ -4,8 +4,9 @@
 	width: 400px;
 }
 
-.row {
+.world-row {
 	line-height: 0;
+	display: flex;
 }
 
 .filler-bag.ex-over {
