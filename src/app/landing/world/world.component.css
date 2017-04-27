@@ -6,7 +6,8 @@
 
 .world-row {
 	line-height: 0;
-	display: flex;
+	/*display: flex;*/
+	font-size: 0;
 }
 
 .filler-bag.ex-over {

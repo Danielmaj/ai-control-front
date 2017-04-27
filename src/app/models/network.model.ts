@@ -59,6 +59,26 @@ export class Network {
 		}
 		return ret;
 	}
+
+
+	resetWorld(data: any[]): void {
+		for (let i = data.length - 1; i >= 0; i--) {
+			let element = data[i];
+			this.world.grid[element.position[0]][element.position[1]] = [];
+		}
+	}
+
+
+	// updateWorld(key: string, data: any[]): void {
+	// 	for (let i = data.length - 1; i >= 0; i--) {
+	// 		let element = data[i];
+	// 		var square = new Square();
+	// 		for (var key in layers) {
+	// 			square.setContentLayer(key, layers[key][i][j]);
+	// 		}
+	// 		this.world.grid[element.position[0]][element.position[1]].push();
+	// 	}
+	// }
 }
 
 export class World {

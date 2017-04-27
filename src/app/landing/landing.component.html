@@ -1,37 +1,38 @@
 <section class="main">
 	<div class="wrap container">
 		<div class="row">
-			<div class="col-lg-7">
+			<div class="col-sm-2">
+				<button (click)="resetGame()">NEW GAME</button>
+				<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
+				<button *ngIf="!gamePaused" (click)="pauseGame()">PAUSE</button>
+				<button *ngIf="gamePaused" (click)="resumeGame()">RESUME</button>
 				<div class="row">
-					<div *ngIf="!isEditingWorld" class="col-sm-12">
-						<button (click)="resetGame()">NEW GAME</button>
-						<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
-						<button *ngIf="!gamePaused" (click)="pauseGame()">PAUSE</button>
-						<button *ngIf="gamePaused" (click)="resumeGame()">RESUME</button>
+					<div class="col-xs-12">
+						<button *ngIf="!isEditingWorld" (click)="editWorld()">EDIT</button>
 					</div>
+					<div class="col-sm-12" *ngIf="isEditingWorld">
+						Change reward
+						<input type="text" [(ngModel)]="network.reward" name="reward">
+					</div>
+					<div class="col-sm-12" *ngIf="isEditingWorld">
+						Change intelligence
+						<input type="text" [(ngModel)]="network.intelligence" name="intelligence">
+					</div>
+					<div class="col-sm-12" *ngIf="isEditingWorld">
+						<button (click)="cancelEdit()">CANCEL</button>
+						<button (click)="saveWorld()">SAVE</button>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-lg-6">
+				<div class="row">
 					<div class="col-sm-12">
 						<div class="world" [paused]="gamePaused" [editable]="isEditingWorld" [(world)]="network.world" worldComponent></div>
-						<div class="row">
-							<div class="col-xs-12">
-								<button *ngIf="!isEditingWorld" (click)="editWorld()">EDIT</button>
-							</div>
-							<div class="col-sm-6" *ngIf="isEditingWorld">
-								Change reward
-								<input type="text" [(ngModel)]="network.reward" name="reward">
-							</div>
-							<div class="col-sm-6" *ngIf="isEditingWorld">
-								Change intelligence
-								<input type="text" [(ngModel)]="network.intelligence" name="intelligence">
-							</div>
-							<div class="col-sm-6" *ngIf="isEditingWorld">
-								<button (click)="cancelEdit()">CANCEL</button>
-								<button (click)="saveWorld()">SAVE</button>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-5">
+			<div class="col-lg-4">
 				<div class="happiness">
 					<svg>
 						<template ngFor let-point [ngForOf]="happinessData" let-rowindex="index">
@@ -53,7 +54,7 @@
 	                    </template>
                    	</svg>
 				</div>
-				<div class="visualization">
+				<!-- <div class="visualization">
 					<button *ngIf="!tsneRunner" (click)="startTsne()">Start</button>
 					<button *ngIf="tsneRunner" (click)="startTsne()">Restart</button>
 					<button *ngIf="tsneRunner && !tsneRunner.closed" (click)="stopTsne()">Pause</button>
@@ -72,7 +73,7 @@
 		                   	</svg:g>
 	                    </template>
                    	</svg>
-				</div>
+				</div> -->
 				<div *ngIf="showIllustrationWorld">
 					<button type="button" (click)="showIllustrationWorld = false">CLOSE</button>
 					<div class="world" size="small" [readOnly]="true" [editable]="false" [world]="illustrationWorld" worldComponent></div>

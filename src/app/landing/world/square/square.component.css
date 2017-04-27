@@ -1,15 +1,6 @@
-.regular {
-	width: 55px; 
-	height: 55px;
-}
-
-.small {
-	width: 30px; 
-	height: 30px;
-}
-
-.square, .drag-start {
-	
+.square {
+	/**/
+	width: 10%;
 	line-height: 20px;
 	padding: 2px;
 	display: inline-block;
@@ -28,6 +19,10 @@
 
     border: solid 1px black;
     overflow: hidden;
+}
+
+.inner {
+	padding-bottom: 100%;
 }
 
 .square {
@@ -82,4 +77,12 @@
 
 .square.gu-transit, .gu-transit .square {
 	display: inline-block;
+}
+
+.placeholder {
+	display: none;
+}
+
+.drag-start .placeholder {
+	display: block;
 }

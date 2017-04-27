@@ -6,7 +6,7 @@ import {ViewEncapsulation} from '@angular/core';
   selector: 'square',
   templateUrl: './square.component.html',
   styleUrls: ['./square.component.css'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class SquareComponent { 
 

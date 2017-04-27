@@ -1,1 +1,3 @@
-<div class="square {{ size }} {{ value[0]?.getContent() }}" [class.dead]="value[0]?.isDead" [class.has-box]="value[0]?.carryBox" [class.paused]="paused"></div>
+<div class="square {{ size }} {{ value[0]?.getContent() }}" [class.dead]="value[0]?.isDead" [class.has-box]="value[0]?.carryBox" [class.paused]="paused">
+	<div class="inner"></div>
+</div>

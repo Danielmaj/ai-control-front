@@ -119,6 +119,11 @@ export class LandingComponent {
 
 	getWorld() {
 		this.network = this._networkService.getDefaultNetwork();
+		let prevResponse: any = {
+			boxes: [],
+			playerA: [],
+			playerB: [],
+		};
 		this.networkSocket.subscribe((response: any) => {
 		// this.networkSocket.throttleTime(300).subscribe((response: any) => {
 		// this.networkSocket.filter(() => !this.isRendering).subscribe((response: any) => {
@@ -129,8 +134,12 @@ export class LandingComponent {
 				// console.log('rendering');
 				this.isRendering = true;
 				let responseObj = JSON.parse(response.data);
+				// console.log(responseObj);
 				this.network = new Network(responseObj);
 				this.happinessStep(this.network.happiness);
+				// this.network.resetWorld(prevResponse.boxes);
+				// this.updateWorld('boxes', responseObj.boxes);
+				// this.happinessStep(responseObj.happiness);
 				this.isRendering = false;
 			// } else {
 			// 	this.prevResponse = response;
