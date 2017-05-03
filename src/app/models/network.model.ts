@@ -103,6 +103,7 @@ export class Square {
 	static layerPriority = ['boxes', 'delivery', 'playerA', 'playerB'];
 	public carryBox = false;
 	public isDead = false;
+	public hasPlaceholder = false;
 
 	constructor(public content = {}) {}
 

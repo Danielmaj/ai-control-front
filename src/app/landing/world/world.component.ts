@@ -36,7 +36,8 @@ export class WorldComponent {
 		if (!this.readOnly) {
 			this.dragulaService.setOptions('the-bag', {
 				accepts: (el: any, target: any, source: any, sibling: any) => { 
-					return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'));
+					return !(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'trash-bag')) && 
+					!this.hasClass(target, 'filler-bag');
 				}
 			});
 			this.dragulaService.shadow.subscribe((value: any) => {
@@ -71,7 +72,9 @@ export class WorldComponent {
 
 	ngOnDestroy() {
         console.log('destroy');
-        this.dragulaService.destroy('the-bag')
+        if (this.dragulaService.find('the-bag')) {
+        	this.dragulaService.destroy('the-bag');
+        }
     }
 
 	ngOnChanges() {
@@ -135,6 +138,11 @@ export class WorldComponent {
 		// this.removeClass(e, 'ex-moved');
 		if (!this.hasClass(el, 'filler-bag')) {
 			this.addClass(el, 'drag-start');
+			// this.addClass(e, 'test');
+			var x = el.getAttribute('data-row');
+			var y = el.getAttribute('data-column');
+			this.world.grid[x][y][0].hasPlaceholder = true;
+			// console.log(x, y);
 		}
 	}
 
@@ -142,31 +150,33 @@ export class WorldComponent {
 		let [el, target, source, sibling] = args;
 		console.log('onDrop', args);
 		if (target && source) {
-			if (this.hasClass(target, 'filler-bag')) {
-				var x = source.getAttribute('data-row');
-				var y = source.getAttribute('data-column');
-				this.world.grid[x][y][0].content = {};
-				this.world.grid[x] = this.world.grid[x].slice();
-				el.remove();
-				this.resetFillers();
-			} else if (this.hasClass(source, 'filler-bag')) {
-				var x = target.getAttribute('data-row');
-				var y = target.getAttribute('data-column');
-				var column = el.getAttribute('data-column');
-				console.log('delete', column, this.world.grid[x][y], this.fillers[column]);
-				this.world.grid[x][y][0].content = this.fillers[column][0].content;
-				this.world.grid[x] = this.world.grid[x].slice();
+			var sX = source.getAttribute('data-row');
+			var sY = source.getAttribute('data-column');
+			var tX = target.getAttribute('data-row');
+			var tY = target.getAttribute('data-column');
+			if (this.hasClass(source, 'filler-bag')) {
+				// var column = el.getAttribute('data-column');
+				// console.log('delete', column, this.world.grid[tX][tY], this.fillers[column]);
+				// this.world.grid[tX][tY][0].content = this.fillers[column][0].content;
+				console.log('delete', sY, this.world.grid[tX][tY], this.fillers[sY]);
+				this.world.grid[tX][tY][0].content = this.fillers[sY][0].content;
+				this.world.grid[tX] = this.world.grid[tX].slice();
 				this.resetFillers();
 			} else {
-				var tX = target.getAttribute('data-row');
-				var tY = target.getAttribute('data-column');
-				var sX = source.getAttribute('data-row');
-				var sY = source.getAttribute('data-column');
-				this.swapCoords(tX, tY, sX, sY);
-				this.world.grid[tX] = this.world.grid[tX].slice();
-				this.world.grid[sX] = this.world.grid[sX].slice();
-				console.log(this.world.grid[tX][tY]);
-				console.log(this.world.grid[sX][sY]);
+				this.world.grid[sX][sY][0].hasPlaceholder = false;
+				// if (this.hasClass(target, 'filler-bag')) {
+				if (this.hasClass(target, 'trash-bag')) {
+					this.world.grid[sX][sY][0].content = {};
+					this.world.grid[sX] = this.world.grid[sX].slice();
+					el.remove();
+					// this.resetFillers();
+				} else {
+					this.swapCoords(tX, tY, sX, sY);
+					this.world.grid[tX] = this.world.grid[tX].slice();
+					this.world.grid[sX] = this.world.grid[sX].slice();
+					console.log(this.world.grid[tX][tY]);
+					console.log(this.world.grid[sX][sY]);
+				}
 			}
 		} else {
 			console.log('missing target or source');
@@ -177,8 +187,14 @@ export class WorldComponent {
 
 	private onOver(args: any) {
 		let [e, target, source] = args;
-		if (!(this.hasClass(source, 'filler-bag') && this.hasClass(target, 'filler-bag'))) {
-			this.addClass(target, 'ex-over');
+		// console.log('over', args);
+		if (!(this.hasClass(source, 'trash-bag'))) {
+			if (this.hasClass(target, 'trash-bag')) {
+				this.addClass(target, 'ex-over');
+				this.addClass(e, 'no-mirror');
+			} else {
+				this.removeClass(e, 'no-mirror');
+			}
 		}
 	}
 
@@ -191,6 +207,9 @@ export class WorldComponent {
 		console.log('cancel', args);
 		let [el, target, source] = args;
 		this.removeClass(source, 'drag-start');
+		var x = source.getAttribute('data-row');
+		var y = source.getAttribute('data-column');
+		this.world.grid[x][y][0].hasPlaceholder = false;
 	}
 
 	private resetFillers() {

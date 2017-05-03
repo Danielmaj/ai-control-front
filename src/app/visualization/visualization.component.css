@@ -1,0 +1,13 @@
+.visualization {
+	background: #b3c2db;
+	height: 400px;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+.dot {
+	cursor: pointer;
+}

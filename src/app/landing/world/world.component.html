@@ -3,20 +3,19 @@
 		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
 		    	<square 
-		    		[paused]="paused" 
-		    		[row]=rowindex 
-		    		[column]=colindex 
-		    		[(value)]="row
-		    		[colindex]" 
-		    		[dragula]='"the-bag"' 
-		    		[attr.data-row]="rowindex" 
+		    		[paused]="paused"
+		    		[row]=rowindex
+		    		[column]=colindex
+		    		[(value)]="row[colindex]"
+		    		[dragula]="'the-bag'"
+		    		[attr.data-row]="rowindex"
 		    		[attr.data-column]="colindex"
 		    		[size]="size"
 		    	></square>
 			</template>
 		</div>
 	</template>
-	<div [dragula]='"the-bag"' class="filler-bag">
+	<div>
 		<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
 			<square 
 				[paused]="paused" 
@@ -26,8 +25,11 @@
 				[attr.data-row]="0" 
 				[attr.data-column]="itemindex"
 				[size]="size"
+				[dragula]="'the-bag'"
+				class="filler-bag"
 			></square>
 		</template>
+		<div class="trash-bag" [dragula]='"the-bag"'>TRASH</div>
 	</div>
 </template>
 <template [ngIf]="!editable">
@@ -35,12 +37,11 @@
 		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
 		    	<square 
-		    		[paused]="paused" 
-		    		[row]=rowindex 
-		    		[column]=colindex 
-		    		[(value)]="row
-		    		[colindex]" 
-		    		[attr.data-row]="rowindex" 
+		    		[paused]="paused"
+		    		[row]=rowindex
+		    		[column]=colindex
+		    		[(value)]="row[colindex]"
+		    		[attr.data-row]="rowindex"
 		    		[attr.data-column]="colindex"
 		    		[size]="size"
 		    	></square>
