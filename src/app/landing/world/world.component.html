@@ -15,7 +15,7 @@
 			</template>
 		</div>
 	</template>
-	<div>
+	<div class="fillers">
 		<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
 			<square 
 				[editable]="editable" 
@@ -29,7 +29,7 @@
 				class="filler-bag"
 			></square>
 		</template>
-		<div class="trash-bag" [dragula]='"the-bag"'>TRASH</div>
+		<div class="trash-bag" [dragula]='"the-bag"'></div>
 	</div>
 </template>
 <template [ngIf]="!editable">

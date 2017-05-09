@@ -11,11 +11,19 @@
 }
 
 .trash-bag {
-	height: 50px;
+	height: 60px;
+	width: 60px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url('/public/images/trash.gif');
 }
 
 .filler-bag.ex-over, .trash-bag.ex-over {
 	border: 3px solid red;
+}
+
+.fillers {
+	margin-top: 20px;
 }
 
 .square.gu-mirror {

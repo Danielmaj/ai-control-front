@@ -4,6 +4,7 @@
 	line-height: 20px;
 	padding: 2px;
 	display: none;
+	background-repeat: no-repeat;
 	background-size: contain;
 	cursor: pointer;
 	text-align: center;
