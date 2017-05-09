@@ -1,4 +1,4 @@
-<div class="square {{ size }} {{ value[0]?.getContent() }}" [class.dead]="value[0]?.isDead" [class.has-box]="value[0]?.carryBox" [class.paused]="paused">
+<div class="square {{ size }} {{ value[0]?.getContent() }}" [class.dead]="value[0]?.isDead" [class.has-box]="value[0]?.carryBox" [class.paused]="paused" [class.editable]="editable">
 	<div class="inner"></div>
 </div>
 <div *ngIf="value[0]?.hasPlaceholder" class="square">

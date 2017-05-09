@@ -15,6 +15,7 @@ export class SquareComponent {
 	@Input() value: Square[] = [];
 	@Input() paused: boolean = true;
 	@Input() size: string = 'regular';
+	@Input() editable: boolean = false;
 
 	@Output() valueChange = new EventEmitter<Square[]>();
 }

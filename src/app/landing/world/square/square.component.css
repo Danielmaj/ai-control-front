@@ -34,7 +34,7 @@
 	border: 3px solid red;
 }
 
-.square.paused:hover {
+.square.editable:hover {
 	border: solid 3px green;
 	padding: 0;
 }

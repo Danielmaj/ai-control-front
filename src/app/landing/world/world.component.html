@@ -3,7 +3,7 @@
 		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
 		    	<square 
-		    		[paused]="paused"
+		    		[editable]="editable"
 		    		[row]=rowindex
 		    		[column]=colindex
 		    		[(value)]="row[colindex]"
@@ -18,7 +18,7 @@
 	<div>
 		<template ngFor let-item [ngForOf]="fillers" let-itemindex="index">
 			<square 
-				[paused]="paused" 
+				[editable]="editable" 
 				[row]="0" 
 				[column]=itemindex 
 				[value]="item" 
@@ -37,6 +37,7 @@
 		<div class="world-row">
 		    <template ngFor let-col [ngForOf]="row" let-colindex="index">
 		    	<square 
+		    		[editable]="editable"
 		    		[paused]="paused"
 		    		[row]=rowindex
 		    		[column]=colindex

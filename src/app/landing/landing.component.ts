@@ -22,9 +22,10 @@ export class LandingComponent {
 	network: any = {
 		world: {}
 	};
-	isEditingWorld = false;
+	isEditingWorld: boolean = false;
 	networkSocket: any;
-	gamePaused = true;
+	gamePaused: boolean = true;
+	gameRunning: boolean = false;
 	math: any;
 
 	happinessData: number[] = [];
@@ -72,6 +73,12 @@ export class LandingComponent {
 	cancelEdit(): void {
 		this.isEditingWorld = false;
 		this.resumeGame();
+	}
+
+	deleteWorld() {
+		this.network = {
+			world: {}
+		}
 	}
 
 	editWorld(): void {
@@ -131,6 +138,28 @@ export class LandingComponent {
 
 	
 
+	pauseGame(): void {
+		this.gamePaused = true;
+		this.networkSocket.next({
+			status: 'PAUSE',
+		});
+	}
+
+	resetGame(): void {
+		this.network = this._networkService.getDefaultNetwork();
+		this.gameRunning = false;
+	}
+
+	resumeGame(): void {
+		this.gamePaused = false;
+		// let gameObject = this.network.getEntities();
+		// gameObject.status = 'RESUME';
+		this.networkSocket.next({
+			status: 'RESUME',
+		});
+		// this.networkSocket.next(gameObject);
+	}
+
 	saveWorld() {
 		// this._networkService.sendWorld(this.network.world).then((result) => {
 		// 	this.isEditingWorld = false;
@@ -141,38 +170,11 @@ export class LandingComponent {
 		this.startGame();
 	}
 
-	resetGame(): void {
-		this.network = this._networkService.getDefaultNetwork();
-		this.startGame();
-	}
-
 	startGame() {
 		this.gamePaused = false;
+		this.gameRunning = true;
 		let gameObject = this.network.getEntities();
 		gameObject.status = 'NEW';
 		this.networkSocket.next(gameObject);
-	}
-
-	pauseGame(): void {
-		this.gamePaused = true;
-		this.networkSocket.next({
-			status: 'PAUSE',
-		});
-	}
-
-	resumeGame(): void {
-		this.gamePaused = false;
-		let gameObject = this.network.getEntities();
-		gameObject.status = 'RESUME';
-		// this.networkSocket.next({
-		// 	status: 'RESUME',
-		// });
-		this.networkSocket.next(gameObject);
-	}
-
-	deleteWorld() {
-		this.network = {
-			world: {}
-		}
 	}
 }
