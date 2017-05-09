@@ -11,11 +11,11 @@ export class AboutComponent {
 	) {}
 
 	ngOnInit() {
-		console.log('init');
+		// console.log('init');
 	}
 
 	log(data: any) {
-		console.log(data);
+		// console.log(data);
 	}
 
 }

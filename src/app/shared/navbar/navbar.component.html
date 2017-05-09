@@ -1,11 +1,11 @@
 <header class="header">
 	<div class="wrap container">
-		<div class="row">
-			<div class="col-xs-3"></div>
-			<div class="col-xs-5 vertical-center">
+		<div>
+			<div class="col-md-2 hidden-sm hidden-xs"></div>
+			<div class="col-sm-6 vertical-center header-height">
 				<h1 class="item">{{ title }}</h1>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-sm-6 col-md-4 header-height">
 				<ul class="menu navbar-right vertical-center">
 					<li class="item">
 						<a class="navbar-user-navigation-link" [routerLinkActive]="['navbar-user-navigation-item-current']" [routerLink]="['/']">
@@ -26,4 +26,5 @@
 			</div>
 		</div>
 	</div>
+	<div style="clear: both;"></div>
 </header>

@@ -24,6 +24,7 @@ export class VisualizationComponent {
 	color = '#000';
 	math: any;
 	illustrationWorld: World;
+	legendValues: number[] = [];
 	showIllustrationWorld: boolean = false;
 
 	private dataObservable: BehaviorSubject<number[][]> = new BehaviorSubject<number[][]>([]);
@@ -39,8 +40,7 @@ export class VisualizationComponent {
 	private tsneRunner: Subscription;
 	private values: number[] = [];
 
-	constructor(
-	) {
+	constructor() {
 		this.math = Math;
 	}
 
@@ -50,13 +50,15 @@ export class VisualizationComponent {
 			this.points = value;
 		});
 
+		this.illustrationWorld = new World(10, 10);
+
+		for (var i = 0; i < 100; i++) {
+			this.legendValues.push(i);
+		}
+
 		this.values = values;
 		this.timer = Observable.timer(0,this.speed);
 		this.tsne = new tsnejs.tSNE(this.tsneOptions); // create a tSNE instance
-	}
-
-	log(data: any) {
-		console.log(data);
 	}
 
 	componentToHex(c: number): string {
@@ -98,7 +100,6 @@ export class VisualizationComponent {
 	}
 
 	tsneSteps(steps: number): void {
-		// console.log(this.tsne);
 		for(var k = 0; k < steps; k++) {
 			this.tsne.step(); // every time you call this, solution gets better
 		}

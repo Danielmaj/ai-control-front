@@ -1,6 +1,6 @@
 .visualization {
 	background: #b3c2db;
-	height: 400px;
+	height: 600px;
 }
 
 svg {
@@ -10,4 +10,16 @@ svg {
 
 .dot {
 	cursor: pointer;
+}
+
+.legend {
+	margin-top: 20px;
+}
+
+.legend svg {
+	height: 30px;
+}
+
+.world {
+	margin-top: 20px;
 }

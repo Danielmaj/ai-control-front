@@ -3,7 +3,6 @@ import { Component, EventEmitter, Input, Output, OnInit, OnDestroy } from '@angu
 import { World, Square } from '../../models';
 
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
-// console.log(DragulaService);
 
 @Component({
   selector: 'world, [worldComponent]',
@@ -29,7 +28,6 @@ export class WorldComponent {
   	}
 
 	constructor(private dragulaService: DragulaService) {
-		console.log("construct");
 	}
 
 	ngOnInit() {
@@ -47,7 +45,6 @@ export class WorldComponent {
 				this.onDrag(value.slice(1));
 			});
 			this.dragulaService.drop.subscribe((value: any) => {
-				console.log('drop', value);
 				this.onDrop(value.slice(1));
 			});
 			this.dragulaService.over.subscribe((value: any) => {
@@ -67,22 +64,18 @@ export class WorldComponent {
 			});
 			this.setFillers();
 		}
-		console.log("init");
 	}
 
 	ngOnDestroy() {
-        console.log('destroy');
         if (this.dragulaService.find('the-bag')) {
         	this.dragulaService.destroy('the-bag');
         }
     }
 
 	ngOnChanges() {
-		// console.log("changes");
 	}
 
 	logWorld() {
-		console.log(this.world);
 	}
 
 	swapSquares() {
@@ -90,25 +83,20 @@ export class WorldComponent {
 	}
 
 	swapCoords(aX: number, aY: number, bX: number, bY: number) {
-		console.log('swapping', aX, aY, bX, bY);
 		if (aX && aY && bX && bY) {
 			var newA = this.world.grid[bX][bY];
 			var newB = this.world.grid[aX][aY];
-			console.log('a', newA, 'b', newB);
 			this.world.grid[aX][aY] = newA;
 			this.world.grid[bX][bY] = newB;
-			console.log('a', this.world.grid[aX][aY], 'b', this.world.grid[bX][bY]);
 		}
 	}
 
 	private onDropModel(args: any) {
 		let [el, target, source] = args;
-		console.log('dropModel', args);
 	}
 
 	private onRemoveModel(args: any) {
 		let [el, source] = args;
-		console.log(args);
 		// do something else
 	}
 
@@ -134,7 +122,6 @@ export class WorldComponent {
 
 	private onDrag(args: any) {
 		let [e, el] = args;
-		console.log('onDrag', args);
 		// this.removeClass(e, 'ex-moved');
 		if (!this.hasClass(el, 'filler-bag')) {
 			this.addClass(el, 'drag-start');
@@ -142,13 +129,11 @@ export class WorldComponent {
 			var x = el.getAttribute('data-row');
 			var y = el.getAttribute('data-column');
 			this.world.grid[x][y][0].hasPlaceholder = true;
-			// console.log(x, y);
 		}
 	}
 
 	private onDrop(args: any) {
 		let [el, target, source, sibling] = args;
-		console.log('onDrop', args);
 		if (target && source) {
 			var sX = source.getAttribute('data-row');
 			var sY = source.getAttribute('data-column');
@@ -156,9 +141,7 @@ export class WorldComponent {
 			var tY = target.getAttribute('data-column');
 			if (this.hasClass(source, 'filler-bag')) {
 				// var column = el.getAttribute('data-column');
-				// console.log('delete', column, this.world.grid[tX][tY], this.fillers[column]);
 				// this.world.grid[tX][tY][0].content = this.fillers[column][0].content;
-				console.log('delete', sY, this.world.grid[tX][tY], this.fillers[sY]);
 				this.world.grid[tX][tY][0].content = this.fillers[sY][0].content;
 				this.world.grid[tX] = this.world.grid[tX].slice();
 				this.resetFillers();
@@ -174,12 +157,9 @@ export class WorldComponent {
 					this.swapCoords(tX, tY, sX, sY);
 					this.world.grid[tX] = this.world.grid[tX].slice();
 					this.world.grid[sX] = this.world.grid[sX].slice();
-					console.log(this.world.grid[tX][tY]);
-					console.log(this.world.grid[sX][sY]);
 				}
 			}
 		} else {
-			console.log('missing target or source');
 		}
 		// this.addClass(el, 'ex-moved');
 		this.removeClass(el, 'drag-start');
@@ -187,7 +167,6 @@ export class WorldComponent {
 
 	private onOver(args: any) {
 		let [e, target, source] = args;
-		// console.log('over', args);
 		if (!(this.hasClass(source, 'trash-bag'))) {
 			if (this.hasClass(target, 'trash-bag')) {
 				this.addClass(target, 'ex-over');
@@ -204,7 +183,6 @@ export class WorldComponent {
 	}
 
 	private onCancel(args: any) {
-		console.log('cancel', args);
 		let [el, target, source] = args;
 		this.removeClass(source, 'drag-start');
 		var x = source.getAttribute('data-row');

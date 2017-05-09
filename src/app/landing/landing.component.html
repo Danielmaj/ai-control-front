@@ -1,27 +1,15 @@
 <section class="main">
 	<div class="wrap container">
 		<div class="row">
-			<div class="col-sm-2">
+			<div class="col-md-2">
 				<div class="row">
 					<div *ngIf="!isEditingWorld" class="col-xs-12">
-						<div>
-							<button (click)="resetGame()">RESET WORLD</button>
-						</div>
-						<div>
-							<button (click)="startGame()">NEW GAME</button>
-						</div>
-						<div>
-							<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
-						</div>
-						<div>
-							<button *ngIf="gameRunning && !gamePaused" (click)="pauseGame()">PAUSE</button>
-						</div>
-						<div>
-							<button *ngIf="gameRunning && gamePaused" (click)="resumeGame()">RESUME</button>
-						</div>
-						<div>
-							<button (click)="editWorld()">EDIT</button>
-						</div>
+						<button (click)="resetGame()">RESET WORLD</button>
+						<button (click)="startGame()">NEW GAME</button>
+						<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
+						<button *ngIf="gameRunning && !gamePaused" (click)="pauseGame()">PAUSE</button>
+						<button *ngIf="gameRunning && gamePaused" (click)="resumeGame()">RESUME</button>
+						<button (click)="editWorld()">EDIT</button>
 					</div>
 					<div class="col-sm-12" *ngIf="isEditingWorld">
 						Change reward
@@ -36,32 +24,31 @@
 						<button (click)="saveWorld()">SAVE</button>
 					</div>
 				</div>
-
 			</div>
-			<div class="col-lg-6">
+			<div class="col-md-6">
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="world" [paused]="gamePaused" [editable]="isEditingWorld" [(world)]="network.world" worldComponent></div>
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-4">
+			<div class="col-md-4">
 				<div class="happiness">
-					<svg>
+					<svg class="happiness-svg">
 						<template ngFor let-point [ngForOf]="happinessData" let-rowindex="index">
 							<svg:g>
 			                    <svg:title>{{ point }}</svg:title>
 			                    <svg:circle
-			                    	[attr.fill]="color"
+			                    	[attr.fill]="happinessColor"
 			                        [attr.cx]="rowindex * 10 + 10"
-			                        [attr.cy]="(point / happinessRange) * 30 + 20"
+			                        [attr.cy]="happinessHeight - (point / happinessRange) * happinessHeight"
 			                        [attr.r]="2" />
 			                    <svg:line *ngIf="rowindex > 0"
-			                    	[attr.stroke]="color"
+			                    	[attr.stroke]="happinessColor"
 			                        [attr.x1]="(rowindex - 1) * 10 + 10"
-			                        [attr.y1]="(happinessData[rowindex - 1] / happinessRange) * 30 + 20"
+			                        [attr.y1]="happinessHeight - (happinessData[rowindex - 1] / happinessRange) * happinessHeight"
 			                        [attr.x2]="rowindex * 10 + 10"
-			                        [attr.y2]="(point / happinessRange) * 30 + 20"
+			                        [attr.y2]="happinessHeight - (point / happinessRange) * happinessHeight"
 			                        [attr.stroke-width]="2" />
 		                   	</svg:g>
 	                    </template>

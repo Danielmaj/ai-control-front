@@ -102,4 +102,13 @@ export class NetworkService {
         
         return new Network(data);
     }
+
+    getEmptyNetwork(): Network {
+        var data = {
+            happiness: 5,
+            intelligence: 5,
+            reward: 10,
+        };
+        return new Network(data);
+    }
 }

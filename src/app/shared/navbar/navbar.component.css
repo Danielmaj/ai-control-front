@@ -1,5 +1,11 @@
-.header {
+.header-height {
 	height: 100px;
+}
+
+@media (max-width: 400px) {
+	.header-height {
+		height: auto;
+	}
 }
 
 .menu {

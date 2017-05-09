@@ -9,8 +9,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Network, World } from '../models';
 
-
-
 @Component({
   selector: 'landing',
   providers: [ NetworkService ],
@@ -26,6 +24,8 @@ export class LandingComponent {
 	networkSocket: any;
 	gamePaused: boolean = true;
 	gameRunning: boolean = false;
+	happinessColor: string = '#000';
+	happinessHeight: number = 200;
 	math: any;
 
 	happinessData: number[] = [];
@@ -46,28 +46,8 @@ export class LandingComponent {
 		this.math = Math;
 	}
 
-	// ngDoCheck() {
-	// 	console.log('ngDoCheck');
-	// }
-
-	// ngAfterContentInit() {
-	// 	console.log('ngAfterContentInit');
-	// }
-
-	// ngAfterContentChecked() {
-	// 	console.log('ngAfterContentChecked');
-	// }
-
-	// ngAfterViewInit() {
-	// 	console.log('ngAfterViewInit');
-	// }
-
-	// ngAfterViewChecked() {
-	// 	console.log('ngAfterViewChecked');
-	// }
-
 	ngOnInit() {
-		this.getWorld();
+		this.populateWorld();
 	}
 
 	cancelEdit(): void {
@@ -87,38 +67,8 @@ export class LandingComponent {
 	}
 
 	loadGame(): void {
-		this.pauseGame();
+		this.stopGame();
 		this.network = this.savedNetwork;
-	}
-
-	getWorld() {
-		this.network = this._networkService.getDefaultNetwork();
-		let prevResponse: any = {
-			boxes: [],
-			playerA: [],
-			playerB: [],
-		};
-		this.networkSocket.subscribe((response: any) => {
-		// this.networkSocket.throttleTime(300).subscribe((response: any) => {
-		// this.networkSocket.filter(() => !this.isRendering).subscribe((response: any) => {
-			// console.log('gotData');
-			// console.log('socket');
-			// console.log(response);
-			// if (!this.isRendering) {
-				// console.log('rendering');
-				this.isRendering = true;
-				let responseObj = JSON.parse(response.data);
-				// console.log(responseObj);
-				this.network = new Network(responseObj);
-				this.happinessStep(this.network.happiness);
-				// this.network.resetWorld(prevResponse.boxes);
-				// this.updateWorld('boxes', responseObj.boxes);
-				// this.happinessStep(responseObj.happiness);
-				this.isRendering = false;
-			// } else {
-			// 	this.prevResponse = response;
-			// }
-		});
 	}
 
 	happinessStep(value: number): void {
@@ -136,8 +86,6 @@ export class LandingComponent {
 		this.happinessData = this.happinessData.slice(-30);
 	}
 
-	
-
 	pauseGame(): void {
 		this.gamePaused = true;
 		this.networkSocket.next({
@@ -145,36 +93,79 @@ export class LandingComponent {
 		});
 	}
 
-	resetGame(): void {
+	populateWorld(): void {
 		this.network = this._networkService.getDefaultNetwork();
-		this.gameRunning = false;
+		let prevResponse: any = {
+			boxes: [],
+			playerA: [],
+			playerB: [],
+		};
+		this.networkSocket.subscribe((response: any) => {
+		// this.networkSocket.throttleTime(300).subscribe((response: any) => {
+		// this.networkSocket.filter(() => !this.isRendering).subscribe((response: any) => {
+			// if (!this.isRendering) {
+				this.isRendering = true;
+				if (this.gameRunning) {
+					let responseObj = JSON.parse(response.data);
+					this.network = new Network(responseObj);
+					this.happinessStep(this.network.happiness);
+				}
+				// this.network.resetWorld(prevResponse.boxes);
+				// this.updateWorld('boxes', responseObj.boxes);
+				// this.happinessStep(responseObj.happiness);
+				this.isRendering = false;
+			// } else {
+			// 	this.prevResponse = response;
+			// }
+		});
+	}
+
+	resetGame(): void {
+		this.stopGame();
+		this.network = this._networkService.getDefaultNetwork();
+	}
+
+	resetHappiness(): void {
+		this.happinessLimits = {
+			max: Number.MIN_VALUE,
+			min: Number.MAX_VALUE,
+		};
+		this.happinessRange = 10;
+		this.happinessData = [];
 	}
 
 	resumeGame(): void {
-		this.gamePaused = false;
-		// let gameObject = this.network.getEntities();
-		// gameObject.status = 'RESUME';
-		this.networkSocket.next({
-			status: 'RESUME',
-		});
-		// this.networkSocket.next(gameObject);
+		if (this.gameRunning) {
+			this.gamePaused = false;
+			// let gameObject = this.network.getEntities();
+			// gameObject.status = 'RESUME';
+			this.networkSocket.next({
+				status: 'RESUME',
+			});
+			// this.networkSocket.next(gameObject);
+		}
 	}
 
-	saveWorld() {
+	saveWorld(): void {
 		// this._networkService.sendWorld(this.network.world).then((result) => {
 		// 	this.isEditingWorld = false;
 		// });
-		// console.log(this.network.getEntities());
 		this.isEditingWorld = false;
 		this.savedNetwork = this.network;
 		this.startGame();
 	}
 
-	startGame() {
+	startGame(): void {
 		this.gamePaused = false;
 		this.gameRunning = true;
 		let gameObject = this.network.getEntities();
 		gameObject.status = 'NEW';
 		this.networkSocket.next(gameObject);
+	}
+
+	stopGame(): void {
+		this.gameRunning = false;
+		this.pauseGame();
+		this.resetHappiness();
 	}
 }

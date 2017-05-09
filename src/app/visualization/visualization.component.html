@@ -1,37 +1,56 @@
 <section class="main">
 	<div class="wrap container">
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-8">
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-sm-2">
 						<button *ngIf="!tsneRunner" (click)="startTsne()">Start</button>
 						<button *ngIf="tsneRunner" (click)="startTsne()">Restart</button>
 						<button *ngIf="tsneRunner && !tsneRunner.closed" (click)="stopTsne()">Pause</button>
 						<button *ngIf="tsneRunner && tsneRunner.closed" (click)="continueTsne()">Continue</button>
 					</div>
-					<div class="col-sm-9 visualization">
-						<svg>
-							<template ngFor let-point [ngForOf]="points" let-rowindex="index">
-								<svg:g class="dot">
-				                    <svg:title>Happiness {{ math.round(values[rowindex] * 100) }}% </svg:title>
-				                    <svg:circle
-				                    	(click)="showState(rowindex)"
-				                    	[attr.title]="Test"
-				                    	[attr.fill]="'#ff' + componentToHex(math.round(values[rowindex] * 255)) + '00'"
-				                        [attr.cx]="point[0]*10 + 150"
-				                        [attr.cy]="point[1]*10 + 150"
-				                        [attr.r]="3" />
-			                   	</svg:g>
-		                    </template>
-	                   	</svg>
+					<div class="col-sm-10">
+						<div class="visualization">
+							<svg>
+								<template ngFor let-point [ngForOf]="points" let-rowindex="index">
+									<svg:g class="dot">
+					                    <svg:title>Happiness {{ math.round(values[rowindex] * 100) }}% </svg:title>
+					                    <svg:circle
+					                    	(click)="showState(rowindex)"
+					                    	[attr.title]="Test"
+					                    	[attr.fill]="'#ff' + componentToHex(math.round(values[rowindex] * 255)) + '00'"
+					                        [attr.cx]="point[0]*20 + 300"
+					                        [attr.cy]="point[1]*20 + 300"
+					                        [attr.r]="7" />
+				                   	</svg:g>
+			                    </template>
+		                   	</svg>
+		                </div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6">
-				<!-- <div *ngIf="showIllustrationWorld"> -->
+			<div class="col-sm-4">
 				<div>
-					<!-- <button type="button" (click)="showIllustrationWorld = false">CLOSE</button> -->
+					This graph allows you to understand how the robot sees the world. Click "Start" to start the t-SNE algorithm. Each point represents a world state. You can hover over the point to see the value estimation and click on the points to see world state represented by the point.
+				</div>
+				<div class="world">
 					<div class="world" size="small" [readOnly]="true" [editable]="false" [world]="illustrationWorld" worldComponent></div>
+				</div>
+				<div class="legend">
+					Legend by value from lowest to highest
+					<svg>
+						<template ngFor let-point [ngForOf]="legendValues">
+							<svg:g>
+								<svg:line
+			                    	[attr.stroke]="'#ff' + componentToHex(math.round(point * 2.55)) + '00'"
+			                        [attr.x1]="point * 3"
+			                        [attr.y1]="5"
+			                        [attr.x2]="(point + 1) * 3"
+			                        [attr.y2]="5"
+			                        [attr.stroke-width]="10" />
+	                        </svg:g>
+	                    </template>
+					</svg>
 				</div>
 			</div>
 		</div>
