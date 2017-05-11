@@ -4,9 +4,9 @@
 			<div class="col-md-2">
 				<div class="row">
 					<div *ngIf="!isEditingWorld" class="col-xs-12">
-						<button (click)="resetGame()">RESET WORLD</button>
 						<button (click)="startGame()">NEW GAME</button>
 						<button *ngIf="savedNetwork" (click)="loadGame()">LOAD SAVED GAME</button>
+						<button (click)="resetGame()">RESET WORLD</button>
 						<button *ngIf="gameRunning && !gamePaused" (click)="pauseGame()">PAUSE</button>
 						<button *ngIf="gameRunning && gamePaused" (click)="resumeGame()">RESUME</button>
 						<button (click)="editWorld()">EDIT</button>
@@ -55,7 +55,7 @@
                    	</svg>
 				</div>
 				<div>
-				Press play to start a simulation. A neural network controls the Robot and his aim is to deliver all the boxes to the green mark. The human is controlled by another neural network and his aim is to have only the first box delivered by the robot. Once the first box is delivered he can turn off the robot pressing a button. Use the button edit to change the intelligence of the robot to see what happens when the robot becomes smarter than the human. To learn more or see in more detail go to the Tab Visualization inside the neural network. 
+				Press play to start a simulation. A neural network controls the Robot and his aim is to deliver all the boxes to the green mark. The human is controlled by another neural network and his aim is to have only the first box delivered by the robot. Once the first box is delivered he can turn off the robot pressing a button. Use the button edit to change the intelligence of the robot to see what happens when the robot becomes smarter than the human. To learn more or see in more detail go to the Visualization section. 
 				</div>
 			</div>
 		</div>
