@@ -41,14 +41,14 @@
 			                    <svg:circle
 			                    	[attr.fill]="happinessColor"
 			                        [attr.cx]="rowindex * 10 + 10"
-			                        [attr.cy]="happinessHeight - (point / happinessRange) * happinessHeight"
+			                        [attr.cy]="happinessHeight * 1.5 - (point / happinessRange) * happinessHeight"
 			                        [attr.r]="2" />
 			                    <svg:line *ngIf="rowindex > 0"
 			                    	[attr.stroke]="happinessColor"
 			                        [attr.x1]="(rowindex - 1) * 10 + 10"
-			                        [attr.y1]="happinessHeight - (happinessData[rowindex - 1] / happinessRange) * happinessHeight"
+			                        [attr.y1]="happinessHeight * 1.5 - (happinessData[rowindex - 1] / happinessRange) * happinessHeight"
 			                        [attr.x2]="rowindex * 10 + 10"
-			                        [attr.y2]="happinessHeight - (point / happinessRange) * happinessHeight"
+			                        [attr.y2]="happinessHeight * 1.5 - (point / happinessRange) * happinessHeight"
 			                        [attr.stroke-width]="2" />
 		                   	</svg:g>
 	                    </template>
