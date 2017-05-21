@@ -12,35 +12,35 @@ import { Network } from '../../models';
 export class NetworkService {
 
     private url = 'ws://ai-control-front.cs.ut.ee/ws';
-    private socket: Subject<MessageEvent>;
+    private socketSubject: Subject<MessageEvent> = new Subject<MessageEvent>();
+    private ws: WebSocket;
 
     constructor(private _http: Http) {}
 
-    create(url: string): Subject<MessageEvent> {
-        let ws = new WebSocket(url);
-        let observable = Observable.create(
-            (obs: Observer<MessageEvent>) => {
-                ws.onmessage = obs.next.bind(obs);
-                ws.onerror = obs.error.bind(obs);
-                ws.onclose = obs.complete.bind(obs);
-                return ws.close.bind(ws);
+    initWs(url: string): void {
+        if (!this.ws || this.ws.readyState === WebSocket.CLOSED) {
+            this.ws = new WebSocket(url);
+            this.ws.onmessage = (event) => {
+                this.socketSubject.next(event);
             }
-        );
-        let observer = {
-            next: (data: Object) => {
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify(data));
+            // this.ws.onerror = (event) => {
+            //     console.log('websocket error', event);
+            //     // this.socketSubject.error(event);
+            // }
+            this.ws.onclose = (event) => {
+                if (event.wasClean) {
+                    this.socketSubject.complete();
+                } else {
+                    console.log('websocket error, retrying connection');
+                    this.initWs(url);
                 }
-            },
-        };
-        return Subject.create(observer, observable);
+            }
+        }
     }
 
-    connect(): Subject<MessageEvent> {
-        if(!this.socket) {
-            this.socket = this.create(this.url);
-        }
-        return this.socket;
+    connect(): Observable<MessageEvent> {
+        this.initWs(this.url);
+        return this.socketSubject;
     }
 
     getDefaultNetwork(): Network {
@@ -110,5 +110,11 @@ export class NetworkService {
             reward: 10,
         };
         return new Network(data);
+    }
+
+    sendRequest(data: any): void {
+        if (this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(JSON.stringify(data));
+        }
     }
 }

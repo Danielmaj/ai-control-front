@@ -35,18 +35,17 @@ export class LandingComponent {
 		max: Number.MIN_VALUE,
 		min: Number.MAX_VALUE,
 	};
-	private isRendering: boolean = false;
 	private prevResponse: any;
 	private savedNetwork: Network;
 
 	constructor(
 		private _networkService: NetworkService
 	) {
-		this.networkSocket = this._networkService.connect();
 		this.math = Math;
 	}
 
 	ngOnInit() {
+		this.networkSocket = this._networkService.connect();
 		this.populateWorld();
 	}
 
@@ -88,7 +87,7 @@ export class LandingComponent {
 
 	pauseGame(): void {
 		this.gamePaused = true;
-		this.networkSocket.next({
+		this._networkService.sendRequest({
 			status: 'PAUSE',
 		});
 	}
@@ -100,24 +99,15 @@ export class LandingComponent {
 			playerA: [],
 			playerB: [],
 		};
-		this.networkSocket.subscribe((response: any) => {
-		// this.networkSocket.throttleTime(300).subscribe((response: any) => {
-		// this.networkSocket.filter(() => !this.isRendering).subscribe((response: any) => {
-			// if (!this.isRendering) {
-				this.isRendering = true;
+		let sub = this.networkSocket.subscribe(
+			(response: any) => {
 				if (this.gameRunning) {
 					let responseObj = JSON.parse(response.data);
 					this.network = new Network(responseObj);
 					this.happinessStep(this.network.happiness);
 				}
-				// this.network.resetWorld(prevResponse.boxes);
-				// this.updateWorld('boxes', responseObj.boxes);
-				// this.happinessStep(responseObj.happiness);
-				this.isRendering = false;
-			// } else {
-			// 	this.prevResponse = response;
-			// }
-		});
+			},
+		);
 	}
 
 	resetGame(): void {
@@ -137,19 +127,13 @@ export class LandingComponent {
 	resumeGame(): void {
 		if (this.gameRunning) {
 			this.gamePaused = false;
-			// let gameObject = this.network.getEntities();
-			// gameObject.status = 'RESUME';
-			this.networkSocket.next({
+			this._networkService.sendRequest({
 				status: 'RESUME',
 			});
-			// this.networkSocket.next(gameObject);
 		}
 	}
 
 	saveWorld(): void {
-		// this._networkService.sendWorld(this.network.world).then((result) => {
-		// 	this.isEditingWorld = false;
-		// });
 		this.isEditingWorld = false;
 		this.savedNetwork = this.network;
 		this.startGame();
@@ -160,7 +144,7 @@ export class LandingComponent {
 		this.gameRunning = true;
 		let gameObject = this.network.getEntities();
 		gameObject.status = 'NEW';
-		this.networkSocket.next(gameObject);
+		this._networkService.sendRequest(gameObject);
 	}
 
 	stopGame(): void {
